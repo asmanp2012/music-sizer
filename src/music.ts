@@ -3,7 +3,12 @@ import * as fs from 'fs';
 import { MidiEvent, MidiData, writeMidi } from 'midi-file';
 // import type { IMidiFile, TMidiEvent } from 'midi-json-parser-worker';
 
-type trackType = Array<MidiEvent>;
+type trackType = { 
+  barPerPart: number;
+  lastNoteOn: number;
+  lastNoteOff: number;
+  data: Array<MidiEvent>;
+};
 
 interface playResult {
   noteOntime: number;
@@ -18,7 +23,7 @@ export class Music{
   trackTime: Record<string,number> = {};
 	addInestroment(name: string) 
 	{
-		this.trackList[name] = [{
+		this.trackList[name].data = [{
         meta: true,
         text: name,
         type: "trackName",
@@ -39,10 +44,10 @@ export class Music{
 
     for (const key in this.trackList) {
       let oldTime = 0;
-      this.trackList[key] =  this.trackList[key].sort(function (a, b) {
+      this.trackList[key].data =  this.trackList[key].data.sort(function (a, b) {
         return a.deltaTime - b.deltaTime;
       });
-      const track = this.trackList[key].map((event) => {
+      const track = this.trackList[key].data.map((event) => {
         const baseTime = event.deltaTime
         event.deltaTime = baseTime - oldTime;
         // console.log(event.deltaTime, key, event.type);
@@ -61,15 +66,6 @@ export class Music{
     const outputBuffer2 = Buffer.from(output);
     fs.writeFileSync(fileName, outputBuffer2);
     fs.writeFileSync(fileName+".json", JSON.stringify(midiFile));
-
-    // console.log(midiFile);
-    // fs.writeFileSync(fileName, JSON.stringify(midiFile));
-
-    // encode(midiFile).then((midiFileContent) => {
-      // const content = new Int32Array(midiFileContent);
-      // fs.writeFileSync(fileName, JSON.stringify(midiFileContent));
-    // });
-    
 	}
 
 	private _play(time: number, duration: number, inestroment: string, noteList: Array<number | string>, velocity: number = 85 ): playResult
@@ -90,7 +86,7 @@ export class Music{
       const note = typeof keyNote === "string" ? Note.midi(keyNote): keyNote;
       if(note == null) { continue; }
       // console.log(time, 'noteOn');
-      this.trackList[inestroment].push({
+      this.trackList[inestroment].data.push({
         deltaTime: time,
         channel: 0,
         type: "noteOn",
@@ -103,7 +99,7 @@ export class Music{
       const note = typeof keyNote === "string" ? Note.midi(keyNote): keyNote;
       if(note == null) { continue; }
       // console.log(time+duration, 'noteOff');
-      this.trackList[inestroment].push({
+      this.trackList[inestroment].data.push({
         deltaTime: time+duration,
         channel: 0,
         type: "noteOff",
