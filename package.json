@@ -1,6 +1,7 @@
 {
   "name": "music-sizer",
   "scripts": {
+    "s": "yarn start",
     "build": "npx tsc",
     "start": "node ./dist/index.js",
     "test": "node ./dist/test.js",

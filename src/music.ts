@@ -1,93 +1,70 @@
 import * as Note from "tonal-note"
-import * as fs from 'fs';
-import { MidiEvent, MidiData, writeMidi } from 'midi-file';
-// import type { IMidiFile, TMidiEvent } from 'midi-json-parser-worker';
+import { exportTrackListToMidi } from './midi-file/export-track-list-to-midi';
+import { TrackList, TimeSignature } from './midi-file/type';
 
-type trackType = { 
-  barPerPart: number;
-  lastNoteOn: number;
-  lastNoteOff: number;
-  data: Array<MidiEvent>;
-};
-
-interface playResult {
-  noteOntime: number;
-  noteOffTime: number;
+interface TimeNote {
+  start: number;
+  end: number;
 }
 
 export class Music{
-  tempo: number = 120;     // beat per minuts
-  tikPerBeat: number = 256;// tik  per beat 
+	trackList: TrackList = {};   // Array<instrument or tracks>
+  tempo: number = 120;         // beat per minuts
+  tikPerBeat: number = 256;    // tik  per beat 
+  timeSignature: TimeSignature | null = null;
 
-	trackList: Record<string,trackType> = {};   // Array<instrument or tracks>
-  trackTime: Record<string,number> = {};
+
+  save(fileName: string){
+    this.trackList["header"] = {
+      trackTime: 0,
+      lastNoteOff: 0,
+      lastNoteOn: 0,
+      data: [{
+        meta: true,
+        type: "timeSignature",
+        deltaTime: 0,
+        "numerator": this.timeSignature?.numerator ?? 4,
+        "denominator": this.timeSignature?.denominator ?? 4,
+        "metronome": 24,
+        "thirtyseconds": 8
+      },
+      {
+        "deltaTime": 0,
+        "meta": true,
+        "type": "endOfTrack"
+      }]
+    }
+    exportTrackListToMidi(fileName,this.trackList, this.tikPerBeat);
+  }
+
 	addInestroment(name: string) 
 	{
-		this.trackList[name].data = [{
+		this.trackList[name] = {
+      trackTime: 0,
+      lastNoteOff: 0,
+      lastNoteOn: 0,
+      data: [{
         meta: true,
         text: name,
         type: "trackName",
         deltaTime: 0,
-    }];
-	}
-
-	save(fileName: string): void
-	{
-		const midiFile: MidiData = {
-      header: {
-        format: 1,
-        numTracks:  Object.keys(this.trackList).length,
-        ticksPerBeat: this.tikPerBeat,
-      },
-      tracks: [],
+      }]
     };
-
-    for (const key in this.trackList) {
-      let oldTime = 0;
-      this.trackList[key].data =  this.trackList[key].data.sort(function (a, b) {
-        return a.deltaTime - b.deltaTime;
-      });
-      const track = this.trackList[key].data.map((event) => {
-        const baseTime = event.deltaTime
-        event.deltaTime = baseTime - oldTime;
-        // console.log(event.deltaTime, key, event.type);
-        oldTime = baseTime;
-        return event;
-      });
-      
-      track.push({
-        deltaTime: 0,
-        type: "endOfTrack",
-        "meta": true
-      });
-      midiFile.tracks.push(track);
-    }
-    const output = writeMidi(midiFile);
-    const outputBuffer2 = Buffer.from(output);
-    fs.writeFileSync(fileName, outputBuffer2);
-    fs.writeFileSync(fileName+".json", JSON.stringify(midiFile));
 	}
 
-	private _play(time: number, duration: number, inestroment: string, noteList: Array<number | string>, velocity: number = 85 ): playResult
+	private _play(time: number, duration: number, inestroment: string, noteList: Array<number | string>, velocity: number = 85 ): TimeNote
 	{
-    if(
-      this.trackTime[inestroment] < time + duration || 
-      this.trackTime[inestroment] == null
-    )
-    {
-      this.trackTime[inestroment] = time + duration;
-    }
+    const timing = { start: time, end: time+duration };
+    this.updateTime(inestroment, timing);
 
-    if(velocity === 0){
-      return { noteOntime: time, noteOffTime: time+duration }
-    }
+    if(velocity === 0){ return timing; }
 
     for (const keyNote of noteList) {
       const note = typeof keyNote === "string" ? Note.midi(keyNote): keyNote;
       if(note == null) { continue; }
       // console.log(time, 'noteOn');
       this.trackList[inestroment].data.push({
-        deltaTime: time,
+        deltaTime: timing.start,
         channel: 0,
         type: "noteOn",
         noteNumber: note,
@@ -100,7 +77,7 @@ export class Music{
       if(note == null) { continue; }
       // console.log(time+duration, 'noteOff');
       this.trackList[inestroment].data.push({
-        deltaTime: time+duration,
+        deltaTime: timing.end,
         channel: 0,
         type: "noteOff",
         noteNumber: note,
@@ -108,29 +85,51 @@ export class Music{
       });
     }
 
-    return { noteOntime: time, noteOffTime: time+duration }
+    return timing;
 	}
 
-  playInTime(time: number, duration: number, inestroment: string, noteList: Array<number | string>, velocity: number = 85 ): playResult
+  updateTime(inestroment: string, timing: TimeNote): void
   {
-    time = beatNumberToTik(time,this.tikPerBeat);
-    duration = beatNumberToTik(duration,this.tikPerBeat);
-    return this._play(time,duration,inestroment,noteList, velocity);
+    const trackTime = this.trackList[inestroment].trackTime;
+    const lastNoteOn = this.trackList[inestroment].lastNoteOn;
+    if(
+      trackTime < timing.end || 
+      trackTime == null
+    )
+    {
+      this.trackList[inestroment].trackTime = timing.end;
+    }
+
+    if(
+      lastNoteOn < timing.start  || 
+      lastNoteOn == null
+    )
+    {
+      this.trackList[inestroment].lastNoteOn = timing.start;
+      this.trackList[inestroment].lastNoteOff = timing.end;
+    }
   }
 
-  play(duration: number, inestroment: string, noteList: Array<number | string>, velocity: number = 85 ): playResult
+  play(duration: number, inestroment: string, noteList: Array<number | string>, velocity: number = 85 ): void
   {
-    console.log(this.trackTime[inestroment]);
-    const time = this.trackTime[inestroment] ?? 0;
+    const time = this.trackList[inestroment].trackTime ?? 0;
     duration = beatNumberToTik(duration,this.tikPerBeat);
-    return this._play(time,duration,inestroment,noteList, velocity);
+    this._play(time,duration,inestroment,noteList, velocity);
+    // console.log(this.trackList[inestroment]);
   }
 
-  playOnTick(time: number, duration: number, inestroment: string, noteList: Array<number | string>, velocity: number = 85 ): playResult
-  {
-    duration = beatNumberToTik(duration,this.tikPerBeat);
-    return this._play(time,duration,inestroment,noteList, velocity);
-  }
+  // playInTime(time: number, duration: number, inestroment: string, noteList: Array<number | string>, velocity: number = 85 ): TimeNote
+  // {
+  //   time = beatNumberToTik(time,this.tikPerBeat);
+  //   duration = beatNumberToTik(duration,this.tikPerBeat);
+  //   return this._play(time,duration,inestroment,noteList, velocity);
+  // }
+
+  // playOnTick(time: number, duration: number, inestroment: string, noteList: Array<number | string>, velocity: number = 85 ): TimeNote
+  // {
+  //   duration = beatNumberToTik(duration,this.tikPerBeat);
+  //   return this._play(time,duration,inestroment,noteList, velocity);
+  // }
 }
 
 export function beatNumberToTik(beat: number, tikPerBeat: number): number
