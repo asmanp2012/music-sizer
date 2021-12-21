@@ -11,7 +11,10 @@ export class Music{
 	trackList: TrackList = {};   // Array<instrument or tracks>
   tempo: number = 120;         // beat per minuts
   tikPerBeat: number = 256;    // tik  per beat 
-  timeSignature: TimeSignature | null = null;
+  timeSignature: TimeSignature = {
+    numerator: 4,
+    denominator: 4
+  };
 
 
   save(fileName: string){
@@ -23,8 +26,8 @@ export class Music{
         meta: true,
         type: "timeSignature",
         deltaTime: 0,
-        "numerator": this.timeSignature?.numerator ?? 4,
-        "denominator": this.timeSignature?.denominator ?? 4,
+        "numerator": this.timeSignature.numerator,
+        "denominator": this.timeSignature.denominator,
         "metronome": 24,
         "thirtyseconds": 8
       },
@@ -37,7 +40,7 @@ export class Music{
     exportTrackListToMidi(fileName,this.trackList, this.tikPerBeat);
   }
 
-	addInestroment(name: string) 
+	addInstrument(name: string) 
 	{
 		this.trackList[name] = {
       trackTime: 0,
@@ -52,18 +55,19 @@ export class Music{
     };
 	}
 
-	private _play(time: number, duration: number, inestroment: string, noteList: Array<number | string>, velocity: number = 85 ): TimeNote
+	private _play(longBeat: boolean, time: number, duration: number, instrument: string, noteList: Array<number | string>, velocity: number = 85 ): TimeNote
 	{
     const timing = { start: time, end: time+duration };
-    this.updateTime(inestroment, timing);
-
+    const hiddenNoteOf = { start: time, end: time };
+    this.updateTime(instrument, longBeat === false ? timing : hiddenNoteOf);
+    
     if(velocity === 0){ return timing; }
 
     for (const keyNote of noteList) {
       const note = typeof keyNote === "string" ? Note.midi(keyNote): keyNote;
       if(note == null) { continue; }
       // console.log(time, 'noteOn');
-      this.trackList[inestroment].data.push({
+      this.trackList[instrument].data.push({
         deltaTime: timing.start,
         channel: 0,
         type: "noteOn",
@@ -76,7 +80,7 @@ export class Music{
       const note = typeof keyNote === "string" ? Note.midi(keyNote): keyNote;
       if(note == null) { continue; }
       // console.log(time+duration, 'noteOff');
-      this.trackList[inestroment].data.push({
+      this.trackList[instrument].data.push({
         deltaTime: timing.end,
         channel: 0,
         type: "noteOff",
@@ -88,16 +92,16 @@ export class Music{
     return timing;
 	}
 
-  updateTime(inestroment: string, timing: TimeNote): void
+  updateTime(instrument: string, timing: TimeNote): void
   {
-    const trackTime = this.trackList[inestroment].trackTime;
-    const lastNoteOn = this.trackList[inestroment].lastNoteOn;
+    const trackTime = this.trackList[instrument].trackTime;
+    const lastNoteOn = this.trackList[instrument].lastNoteOn;
     if(
       trackTime < timing.end || 
       trackTime == null
     )
     {
-      this.trackList[inestroment].trackTime = timing.end;
+      this.trackList[instrument].trackTime = timing.end;
     }
 
     if(
@@ -105,19 +109,31 @@ export class Music{
       lastNoteOn == null
     )
     {
-      this.trackList[inestroment].lastNoteOn = timing.start;
-      this.trackList[inestroment].lastNoteOff = timing.end;
+      this.trackList[instrument].lastNoteOn = timing.start;
+      this.trackList[instrument].lastNoteOff = timing.end;
     }
   }
 
-  play(duration: number, inestroment: string, noteList: Array<number | string>, velocity: number = 85 ): void
+  play(typeDuration: number, instrument: string, noteList: Array<number | string>, duration: number = 1,  velocity: number = 85 ): void
   {
-    const time = this.trackList[inestroment].trackTime ?? 0;
-    duration = beatNumberToTik(duration,this.tikPerBeat);
-    this._play(time,duration,inestroment,noteList, velocity);
-    // console.log(this.trackList[inestroment]);
+    const time = this.trackList[instrument].trackTime ?? 0;
+    typeDuration = this.noteNumberToTik(typeDuration,this.tikPerBeat);
+    this._play(false ,time,typeDuration * duration,instrument,noteList, velocity);
   }
 
+  playHidden(typeDuration: number, instrument: string, noteList: Array<number | string>, duration: number = 1,  velocity: number = 85 ): void
+  {
+    const time = this.trackList[instrument].trackTime ?? 0;
+    typeDuration = this.noteNumberToTik(typeDuration,this.tikPerBeat);
+    this._play(true ,time,typeDuration * duration,instrument,noteList, velocity);
+  }
+
+  noteNumberToTik(typeDuration: number, tikPerBeat: number): number
+  {
+    const wholeNote = tikPerBeat * this.timeSignature.denominator;
+    const duration = wholeNote / Math.pow(2, typeDuration-1); 
+    return duration;
+  }
   // playInTime(time: number, duration: number, inestroment: string, noteList: Array<number | string>, velocity: number = 85 ): TimeNote
   // {
   //   time = beatNumberToTik(time,this.tikPerBeat);
@@ -130,16 +146,4 @@ export class Music{
   //   duration = beatNumberToTik(duration,this.tikPerBeat);
   //   return this._play(time,duration,inestroment,noteList, velocity);
   // }
-}
-
-export function beatNumberToTik(beat: number, tikPerBeat: number): number
-{
-  if(Math.sign(beat) === -1) 
-  { 
-    const lengthFromNote = beat * -1;
-    const lengthFromBeat = Math.pow(2, lengthFromNote);
-    beat = tikPerBeat / lengthFromBeat;
-  }
-  else { beat = tikPerBeat * beat; }
-  return beat;
 }
