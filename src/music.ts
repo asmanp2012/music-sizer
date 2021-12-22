@@ -7,6 +7,29 @@ interface TimeNote {
   end: number;
 }
 
+interface BaseTimeType {
+  type: number;
+  length: number;
+}
+
+interface OptionalDurationType {
+  type?: number;
+  length?: number;
+}
+
+type TimeType = BaseTimeType | OptionalDurationType;
+
+
+const defultDuration: BaseTimeType = {
+  type: 3,
+  length: 1
+}
+
+const defultAfterTime: BaseTimeType = {
+  type: 0,
+  length: 0
+}
+
 export class Music{
 	trackList: TrackList = {};   // Array<instrument or tracks>
   tempo: number = 120;         // beat per minuts
@@ -55,11 +78,11 @@ export class Music{
     };
 	}
 
-	private _play(longBeat: boolean, time: number, duration: number, instrument: string, noteList: Array<number | string>, velocity: number = 85 ): TimeNote
+	private _play(time: number, duration: number, instrument: string, noteList: Array<number | string>, velocity: number = 85 ): TimeNote
 	{
     const timing = { start: time, end: time+duration };
-    const hiddenNoteOf = { start: time, end: time };
-    this.updateTime(instrument, longBeat === false ? timing : hiddenNoteOf);
+    // const hiddenNoteOf = { start: time, end: time };
+    this.updateTime(instrument, timing);
     
     if(velocity === 0){ return timing; }
 
@@ -114,23 +137,28 @@ export class Music{
     }
   }
 
-  play(typeDuration: number, instrument: string, noteList: Array<number | string>, duration: number = 1,  velocity: number = 85 ): void
+  play(instrument: string, noteList: Array<number | string>, inputDuration?: TimeType, inputAfterNoteOn?: TimeType,  velocity: number = 85 ): void
   {
-    const time = this.trackList[instrument].trackTime ?? 0;
-    typeDuration = this.noteNumberToTik(typeDuration,this.tikPerBeat);
-    this._play(false ,time,typeDuration * duration,instrument,noteList, velocity);
+    const durationOption: BaseTimeType = {
+      ...defultDuration,
+      ...inputDuration
+    };
+
+    const timeOption: BaseTimeType = {
+      ...defultAfterTime,
+      ...inputAfterNoteOn
+    }
+
+    const after = this.noteNumberToTik(timeOption.type) * timeOption.length;
+    const time = (this.trackList[instrument].lastNoteOn ?? 0) + after;
+    const duration = this.noteNumberToTik(durationOption.type);
+    this._play(time,duration * durationOption.length,instrument,noteList, velocity);
   }
 
-  playHidden(typeDuration: number, instrument: string, noteList: Array<number | string>, duration: number = 1,  velocity: number = 85 ): void
+  noteNumberToTik(typeDuration: number): number
   {
-    const time = this.trackList[instrument].trackTime ?? 0;
-    typeDuration = this.noteNumberToTik(typeDuration,this.tikPerBeat);
-    this._play(true ,time,typeDuration * duration,instrument,noteList, velocity);
-  }
-
-  noteNumberToTik(typeDuration: number, tikPerBeat: number): number
-  {
-    const wholeNote = tikPerBeat * this.timeSignature.denominator;
+    if(typeDuration === 0) { return 0; }
+    const wholeNote = this.tikPerBeat * this.timeSignature.denominator;
     const duration = wholeNote / Math.pow(2, typeDuration-1); 
     return duration;
   }
