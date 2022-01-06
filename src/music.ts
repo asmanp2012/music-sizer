@@ -28,7 +28,7 @@ const defultDuration: BaseTimeType = {
 export class Music{
 	trackList: TrackList = {};   // Array<instrument or tracks>
   tempo: number = 120;         // beat per minuts
-  tikPerBeat: number = 256;    // tik  per beat 
+  tikPerBeat: number = 2520;    // tik  per beat 
   timeSignature: TimeSignature = {
     numerator: 4,
     denominator: 4

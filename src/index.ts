@@ -1,8 +1,8 @@
 import { Music } from './music';
 
 const myMusic = new Music();
-myMusic.tikPerBeat = 300;
 
+myMusic.tempo = 140;
 
 myMusic.addInstrument('piano');
 myMusic.timeSignature = {
