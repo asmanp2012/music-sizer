@@ -38,8 +38,10 @@ export class Music{
   save(fileName: string){
     this.trackList["header"] = {
       trackTime: 0,
-      lastNoteOff: 0,
-      lastNoteOn: 0,
+      lastEnd: 0,
+      lastStart: 0,
+      delay: 0,
+      beat: 0,
       data: [{
         meta: true,
         type: "timeSignature",
@@ -68,8 +70,10 @@ export class Music{
 	{
 		this.trackList[name] = {
       trackTime: 0,
-      lastNoteOff: 0,
-      lastNoteOn: 0,
+      lastEnd: 0,
+      lastStart: 0,
+      delay: 0,
+      beat: 0,
       data: [{
         meta: true,
         text: name,
@@ -82,7 +86,7 @@ export class Music{
 	private _play(time: number, duration: number, instrument: string, noteList: Array<number | string>, velocity: number = 85 ): TimeNote
 	{
     const timing = { start: time, end: time+duration };
-    
+    this.updateTime(instrument, timing);
     if(velocity === 0){ return timing; }
 
     for (const keyNote of noteList) {
@@ -117,13 +121,14 @@ export class Music{
   updateTime(instrument: string, timing: TimeNote): void
   {
     const trackTime = this.trackList[instrument].trackTime;
-    const lastNoteOn = this.trackList[instrument].lastNoteOn;
+    const lastNoteOn = this.trackList[instrument].lastStart;
     if(
       trackTime < timing.end || 
       trackTime == null
     )
     {
       this.trackList[instrument].trackTime = timing.end;
+      this.trackList[instrument].lastEnd = timing.end;
     }
 
     if(
@@ -131,8 +136,7 @@ export class Music{
       lastNoteOn == null
     )
     {
-      this.trackList[instrument].lastNoteOn = timing.start;
-      this.trackList[instrument].lastNoteOff = timing.end;
+      this.trackList[instrument].lastStart = timing.start;
     }
   }
 
@@ -150,9 +154,14 @@ export class Music{
       ...inputDuration
     };
 
-    const time = (this.trackList[instrument].lastNoteOn ?? 0);
+    const time = (this.trackList[instrument].beat * this.tikPerBeat) + this.trackList[instrument].delay;
     const duration = this.noteNumberToTik(durationOption.type);
     this._play(time,duration * durationOption.length,instrument,noteList, velocity);
+  }
+
+  delay(instrument: string, inputDuration: BaseTimeType){
+    const duration = this.noteNumberToTik(inputDuration.type);
+    this.trackList[instrument].delay = duration * inputDuration.length;
   }
 
   playSuccessive(instrument: string, noteList: Array<number | string | null>, inputDuration?: TimeType, velocity: number = 85 ): void
@@ -163,7 +172,7 @@ export class Music{
     };
     const duration = this.noteNumberToTik(durationOption.type) * durationOption.length;
     const durationTime = duration / noteList.length;
-    let time = (this.trackList[instrument].lastNoteOn ?? 0);
+    let time = (this.trackList[instrument].beat * this.tikPerBeat) + this.trackList[instrument].delay;
     for (const note of noteList) {
       if(note != null) {
         this._play(time,durationTime,instrument,[note], velocity);
@@ -174,10 +183,8 @@ export class Music{
 
   next(instrument: string, number: number = 1): void
   {
-    const beatNumber = Math.abs(Math.floor((this.trackList[instrument].lastNoteOn/this.tikPerBeat)));
-    const time = this.tikPerBeat * (beatNumber + number);
-    const timing = { start: time, end: time };
-    this.updateTime(instrument, timing);
+    this.trackList[instrument].delay = 0;
+    this.trackList[instrument].beat  = this.trackList[instrument].beat + number;
   }
 
   noteNumberToTik(typeDuration: number): number

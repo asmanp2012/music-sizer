@@ -1,8 +1,10 @@
 import { MidiEvent } from 'midi-file';
 
 export type TrackType = {
-  lastNoteOn: number;
-  lastNoteOff: number;
+  lastStart: number;
+  lastEnd: number;
+  delay: number;
+  beat: number;
   trackTime: number;
   data: Array<MidiEvent>;
 };
