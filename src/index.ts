@@ -456,7 +456,292 @@ myMusic.play('piano', ['E3'], { type:3, length:3 });
 myMusic.play('piano', ['G3'], { type:3, length:3 });
 myMusic.play('piano', ['B3'], { type:3, length:3 });
 myMusic.play('piano', ['E4'], { type:3, length:3 });
+myMusic.next('piano', 3);
+/* ********** End Bar ************ */
+
+
+/* ********* Start Bar ************ */
+myMusic.play('piano', ['B2'], { type:3, length:1 });
+myMusic.play('piano', ['B3'], { type:3, length:1 });
+myMusic.play('piano', ['B5'], { type:3, length:1 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['Db3'], { type:3, length:1 });
+myMusic.play('piano', ['Db4'], { type:3, length:1 });
+myMusic.play('piano', ['G5'], { type:3, length:1 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['Eb3'], { type:3, length:1 });
+myMusic.play('piano', ['Eb4'], { type:3, length:1 });
+myMusic.play('piano', ['F#5'], { type:3, length:1 });
 myMusic.next('piano');
 /* ********** End Bar ************ */
+
+
+/* ********* Start Bar ************ */
+myMusic.play('piano', ['E3'], { type:3, length:3 });
+myMusic.play('piano', ['E4'], { type:3, length:3 });
+myMusic.play('piano', ['E5'], { type:3, length:3 });
+myMusic.next('piano',3);
+/* ********** End Bar ************ */
+
+
+/* ********* Start Bar ************ */
+myMusic.play('piano', ['G4'], { type:6, length:2 });
+myMusic.delay('piano', { type:6, length:2 });
+myMusic.play('piano', ['F#4'], { type:6, length:1 });
+myMusic.delay('piano', { type:6, length:3 });
+myMusic.play('piano', ['E4'], { type:6, length:4 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['F#4'], { type:3, length:1 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['G4'], { type:3, length:1 });
+myMusic.next('piano');
+/* ********** End Bar ************ */
+
+
+/* ********* Start Bar ************ */
+myMusic.play('piano', ['E3'], { type:3, length:1 });
+myMusic.play('piano', ['B4'], { type:3, length:1 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['G3'], { type:3, length:1 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['B3'], { type:3, length:1 });
+myMusic.play('piano', ['C5'], { type:3, length:1 });
+myMusic.next('piano');
+/* ********** End Bar ************ */
+
+
+/* ********* Start Bar ************ */
+myMusic.play('piano', ['Eb3'], { type:3, length:1 });
+myMusic.play('piano', ['B4'], { type:3, length:1 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['G3'], { type:3, length:1 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['B3'], { type:3, length:1 });
+myMusic.play('piano', ['C5'], { type:3, length:1 });
+myMusic.next('piano');
+/* ********** End Bar ************ */
+
+
+/* ********* Start Bar ************ */
+myMusic.play('piano', ['E3'], { type:3, length:1 });
+myMusic.play('piano', ['B4'], { type:3, length:1 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['G3'], { type:3, length:1 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['B3'], { type:6, length:3 });
+myMusic.play('piano', ['C5'], { type:3, length:1 });
+myMusic.next('piano');
+/* ********** End Bar ************ */
+
+
+/* ********* Start Bar ************ */
+myMusic.play('piano', ['E3'], { type:3, length:2 });
+myMusic.play('piano', ['Ab3'], { type:3, length:2 });
+myMusic.play('piano', ['B3'], { type:3, length:2 });
+myMusic.play('piano', ['D4'], { type:3, length:2 });
+myMusic.play('piano', ['B4'], { type:3, length:1 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['D5'], { type:3, length:1 });
+myMusic.next('piano');
+
+myMusic.playSuccessive( 
+  'piano', [ 'B4', 'C5', 'B4' ]
+  , { type:3, length: 1 }
+);
+myMusic.next('piano');
+/* ********** End Bar ************ */
+
+
+/* ********* Start Bar ************ */
+myMusic.play('piano', ['E3'], { type:3, length:2 });
+myMusic.play('piano', ['A4'], { type:3, length:2 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['A3'], { type:3, length:1 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['C4'], { type:6, length:3 });
+myMusic.play('piano', ['B4'], { type:3, length:1 });
+myMusic.next('piano');
+/* ********** End Bar ************ */
+
+
+/* ********* Start Bar ************ */
+myMusic.play('piano', ['A2'], { type:3, length:2 });
+myMusic.play('piano', ['A4'], { type:3, length:2 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['E3'], { type:3, length:1 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['A3'], { type:3, length:1 });
+myMusic.play('piano', ['B4'], { type:3, length:1 });
+myMusic.next('piano');
+/* ********** End Bar ************ */
+
+
+/* ********* Start Bar ************ */
+myMusic.play('piano', ['E3'], { type:3, length:2 });
+myMusic.play('piano', ['A4'], { type:3, length:2 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['A3'], { type:3, length:1 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['C4'], { type:3, length:1 });
+myMusic.play('piano', ['B4'], { type:3, length:1 });
+myMusic.next('piano');
+/* ********** End Bar ************ */
+
+
+/* ********* Start Bar ************ */
+myMusic.play('piano', ['B2'], { type:3, length:2 });
+myMusic.play('piano', ['A4'], { type:3, length:2 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['A3'], { type:6, length:3 });
+myMusic.play('piano', ['Eb3'], { type:6, length:1 });
+myMusic.play('piano', ['F#3'], { type:6, length:1 });
+myMusic.play('piano', ['B4'], { type:3, length:1 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['A3'], { type:6, length:5 });
+myMusic.play('piano', ['F#3'], { type:6, length:1 });
+myMusic.playSuccessive( 
+  'piano', [ 'A4', 'B4', 'A4', 'B4' ]
+  , { type:3, length: 1 }
+);
+myMusic.next('piano');
+/* ********** End Bar ************ */
+
+
+/* ********* Start Bar ************ */
+myMusic.play('piano', ['E3'], { type:3, length:1 });
+myMusic.play('piano', ['G4'], { type:3, length:1 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['G3'], { type:3, length:1 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['B3'], { type:6, length:3 });
+myMusic.play('piano', ['A4'], { type:3, length:1 });
+myMusic.next('piano');
+/* ********** End Bar ************ */
+
+
+/* ********* Start Bar ************ */
+myMusic.play('piano', ['C3'], { type:3, length:1 });
+myMusic.play('piano', ['G4'], { type:3, length:1 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['E3'], { type:3, length:1 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['G3'], { type:6, length:3 });
+myMusic.play('piano', ['A4'], { type:3, length:1 });
+myMusic.next('piano');
+/* ********** End Bar ************ */
+
+
+/* ********* Start Bar ************ */
+myMusic.play('piano', ['Db3'], { type:3, length:2 });
+myMusic.play('piano', ['G4'], { type:3, length:2 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['G3'], { type:3, length:1 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['F#4'], { type:6, length:1 });
+myMusic.play('piano', ['B3'], { type:3, length:1 });
+myMusic.playSuccessive( 
+  'piano', [ 'Eb4', 'E4' ], 
+  { type:3, length: 1 }, 
+  50
+);
+myMusic.next('piano');
+/* ********** End Bar ************ */
+
+
+/* ********* Start Bar ************ */
+myMusic.play('piano', ['E3'], { type:3, length:2 });
+myMusic.play('piano', ['E4'], { type:3, length:2 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['E3'], { type:3, length:1 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['G3'], { type:6, length:3 });
+myMusic.playSuccessive( 
+  'piano', [ 'F#4', 'G4' ], 
+  { type:3, length: 1 }, 
+  50
+);
+myMusic.next('piano');
+/* ********** End Bar ************ */
+
+
+/* ********* Start Bar ************ */
+myMusic.play('piano', ['B2'], { type:3, length:3 });
+myMusic.play('piano', ['F#4'], { type:3, length:2 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['Eb3'], { type:3, length:2 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['F#3'], { type:3, length:1 });
+myMusic.next('piano');
+/* ********** End Bar ************ */
+
+
+/* ********* Start Bar ************ */
+myMusic.play('piano', ['C4'], { type:3, length:2 });
+myMusic.play('piano', ['C5'], { type:3, length:3 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['A3'], { type:3, length:2 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['F#3'], { type:6, length:4 });
+myMusic.next('piano');
+/* ********** End Bar ************ */
+
+
+/* ********* Start Bar ************ */
+myMusic.play('piano', ['E3'], { type:3, length:2 });
+myMusic.play('piano', ['G3'], { type:3, length:2 });
+myMusic.play('piano', ['B3'], { type:3, length:2 });
+myMusic.play('piano', ['B4'], { type:3, length:2 });
+myMusic.next('piano', 2);
+
+myMusic.playSuccessive( 
+  'piano', [ null, 'G4', 'F#4' ], 
+  { type:3, length: 1 },
+);
+myMusic.next('piano');
+/* ********** End Bar ************ */
+
+
+/* ********* Start Bar ************ */
+myMusic.play('piano', ['E4'], { type:3, length:1 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['F#4'], { type:3, length:1 });
+myMusic.next('piano');
+
+myMusic.play('piano', ['G4'], { type:6, length:3 });
+myMusic.next('piano');
+/* ********** End Bar ************ */
+
 
 myMusic.save('Music.mid');
