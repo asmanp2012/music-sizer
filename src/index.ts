@@ -10,11 +10,39 @@ myMusic.timeSignature = {
     denominator: 4
 }
 
-myMusic.playHidden(3, 'piano', ["A5"], 3);
-myMusic.play(3, 'piano', ["E4"]);
-myMusic.play(4, 'piano', ["E3"]);
-myMusic.play(4, 'piano', ["F3"]);
-myMusic.play(4, 'piano', ["G3"]);
-myMusic.play(2, 'piano', ["A3"]);
+myMusic.play('piano', ["E3"], { type:3, length:2 });
+myMusic.play('piano', ["A4"], { type:3, length:3 });
+myMusic.play('piano', ["C4"], { type:4, length:1 }, { type:3, length:1 });
+myMusic.play('piano', ["A3"], { type:4, length:1 });
+myMusic.play('piano', ["C4"], { type:3, length:1 }, { type:3, length:1 });
+myMusic.play('piano', ["A3"], { type:3, length:1 });
+
+myMusic.play('piano', ["E3"], { type:3, length:2 }, { type:3, length:1 });
+myMusic.play('piano', ["C5"], { type:3, length:3 });
+myMusic.play('piano', ["C4"], { type:4, length:1 }, { type:3, length:1 });
+myMusic.play('piano', ["A3"], { type:4, length:1 });
+myMusic.play('piano', ["C4"], { type:3, length:1 }, { type:3, length:1 });
+myMusic.play('piano', ["A3"], { type:3, length:1 });
+
+myMusic.play('piano', ["E3"], { type:3, length:2 }, { type:3, length:1 });
+myMusic.play('piano', ["E5"], { type:3, length:2 });
+myMusic.play('piano', ["C4"], { type:4, length:1 }, { type:3, length:1 });
+myMusic.play('piano', ["A3"], { type:4, length:1 });
+myMusic.play('piano', ["C4"], { type:3, length:1 }, { type:3, length:1 });
+myMusic.play('piano', ["A3"], { type:3, length:1 });
+
+myMusic.play('piano', ["E3"], { type:3, length:2 }, { type:3, length:1 });
+myMusic.play('piano', ["C5"], { type:6, length:3 });
+myMusic.play('piano', ["D5"], { type:6, length:3 }, { type:6, length:3 });
+myMusic.play('piano', ["C5"], { type:6, length:3 }, { type:6, length:3 });
+myMusic.play('piano', ["B4"], { type:6, length:3 }, { type:6, length:3 });
+myMusic.play('piano', ["D5"], { type:6, length:3 }, { type:6, length:3 });
+myMusic.play('piano', ["B4"], { type:6, length:3 }, { type:6, length:3 });
+myMusic.play('piano', ["A4"], { type:6, length:3 }, { type:6, length:3 });
+myMusic.play('piano', ["B4"], { type:6, length:3 }, { type:6, length:3 });
+myMusic.play('piano', ["A4"], { type:6, length:3 }, { type:6, length:3 });
+
+myMusic.play('piano', ["E3"], { type:3, length:2 }, { type:6, length:3 });
+myMusic.play('piano', ["G4"], { type:3, length:1 });
 
 myMusic.save('Music.mid');
