@@ -1,4 +1,4 @@
-import * as Note from "tonal-note"
+import * as Note from "tonal-note";
 import { exportTrackListToMidi } from './midi-file/export-track-list-to-midi';
 import { TrackList, TimeSignature } from './midi-file/type';
 
