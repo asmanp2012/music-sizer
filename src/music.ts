@@ -1,6 +1,11 @@
-import * as Note from "tonal-note";
+import Note from "@tonaljs/note";
 import { exportTrackListToMidi } from './midi-file/export-track-list-to-midi';
 import { TrackList, TimeSignature } from './midi-file/type';
+
+type noteName = 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B';
+type noteExtend = '#' | 'b' | '';
+type noteScale = '1' | '2' | '3' | '4' | '5' | '6' | '7';
+type note = `${noteName}${noteExtend}${noteScale}`;
 
 interface TimeNote {
   start: number;
@@ -83,7 +88,7 @@ export class Music{
     };
 	}
 
-	private _play(time: number, duration: number, instrument: string, noteList: Array<number | string>, velocity: number = 85 ): TimeNote
+	private _play(time: number, duration: number, instrument: string, noteList: Array<number | note>, velocity: number = 85 ): TimeNote
 	{
     const timing = { start: time, end: time+duration };
     this.updateTime(instrument, timing);
@@ -147,7 +152,7 @@ export class Music{
    * @param {TimeType} inputDuration give duration of play
    * @param {number} velocity volume of play
    */
-  play(instrument: string, noteList: Array<number | string>, inputDuration?: TimeType, velocity: number = 85 ): void
+  play(instrument: string, noteList: Array<number | note>, inputDuration?: TimeType, velocity: number = 85 ): void
   {
     const durationOption: BaseTimeType = {
       ...defultDuration,
@@ -164,7 +169,7 @@ export class Music{
     this.trackList[instrument].delay = duration * inputDuration.length;
   }
 
-  playSuccessive(instrument: string, noteList: Array<number | string | null>, inputDuration?: TimeType, velocity: number = 85 ): void
+  playSuccessive(instrument: string, noteList: Array<number | note | null>, inputDuration?: TimeType, velocity: number = 85 ): void
   {
     const durationOption: BaseTimeType = {
       ...defultDuration,
