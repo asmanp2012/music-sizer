@@ -1,11 +1,9 @@
 {
   "name": "music-sizer",
   "scripts": {
-    "s": "yarn start",
     "build": "npx tsc",
-    "start": "node ./dist/index.js",
-    "test": "node ./dist/test.js",
-    "restart": "npm-run-all --sequential build start",
+    "test": "node ./dist/demo/piano/soltan-ghalbha.js",
+    "restart": "npm-run-all --sequential build test",
     "clean": "tsc --build --clean"
   },
   "version": "0.0.0",

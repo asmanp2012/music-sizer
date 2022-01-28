@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import { dirname } from 'path';
 import { MidiData, writeMidi } from 'midi-file';
 import { TrackList } from './type';
 
@@ -40,6 +41,10 @@ export function exportTrackListToMidi(
   }
   const output = writeMidi(midiFile);
   const outputBuffer2 = Buffer.from(output);
+  const dirName = dirname(fileName);
+  if (!fs.existsSync(dirName)) {
+    fs.mkdirSync(dirName, { recursive: true });
+  }
   fs.writeFileSync(fileName, outputBuffer2);
   fs.writeFileSync(fileName+".json", JSON.stringify(midiFile));
 }
