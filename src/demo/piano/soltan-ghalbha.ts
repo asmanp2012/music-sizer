@@ -1,4 +1,4 @@
-import { Music } from './music';
+import { Music } from '../../music.js';
 
 const myMusic = new Music();
 
@@ -1466,4 +1466,4 @@ myMusic.play('piano', ['B5'], { type:3, length:5 });
 myMusic.next('piano');
 /* ********** End Bar ************ */
 
-myMusic.save('Music.mid');
+myMusic.save('./demo/piano/soltan-ghalbha.mid');
