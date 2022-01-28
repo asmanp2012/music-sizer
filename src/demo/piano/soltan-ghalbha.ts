@@ -1,4 +1,4 @@
-import { Music } from '../../music.js';
+import { Music } from '../../index.js';
 
 const myMusic = new Music();
 
