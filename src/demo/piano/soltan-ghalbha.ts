@@ -1467,3 +1467,5 @@ myMusic.next('piano');
 /* ********** End Bar ************ */
 
 myMusic.save('./demo/piano/soltan-ghalbha.mid');
+
+export {};
