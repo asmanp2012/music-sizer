@@ -133,5 +133,3 @@ const guitarFretboard: GuitarFretboardType = {
     19: 'B3'
   },
 }
-
-
