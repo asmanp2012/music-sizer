@@ -1,2 +1,2 @@
 import './piano/soltan-ghalbha.js';
-import './guitar/test.js';
+import './guitar/soltan-ghalbha.js';
