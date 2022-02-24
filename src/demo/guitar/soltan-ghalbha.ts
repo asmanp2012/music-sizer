@@ -13,25 +13,22 @@ myMusic.timeSignature = {
 const guitar = new Guitar('guitar', myMusic);
 const oneBeat = { type: 3, length: 1 };
 
-guitar.soloPlay(3,2, oneBeat);
-guitar.next();
-
-guitar.soloPlay(2,0, oneBeat);
-guitar.next();
-
-guitar.soloPlay(2,1, oneBeat);
-guitar.next();
+guitar.SuccessiveSoloPlay(
+  [[3,2], [2,0], [2,1], [1,0]],
+  { type: 4, length: 9 }
+);
+guitar.next(5);
 
 for (let index = 0; index < 3; index++) {
-  guitar.soloPlay(1,0, { type: 4, length: 3 });
-  guitar.next();
-
-  guitar.delay({ type: 4, length: 1 })
-  guitar.soloPlay(1,1, { type: 4, length: 3 });
-  guitar.next(2);
+  guitar.SuccessiveSoloPlay(
+    [[1,1], [1,0]],
+    { type: 3, length: 2 }
+  );
+  guitar.next(3);
 }
-  
-guitar.soloPlay(1,0, { type: 4, length: 3 });
+
 guitar.next();
+guitar.soloPlay([1,0], { type: 3, length: 1 });
+
 
 myMusic.save('./demo/guitar/soltan-ghalbha.mid');

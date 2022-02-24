@@ -22,16 +22,30 @@ export class Guitar {
   }
 
   soloPlay(
-    wireNumber: GuitarWireType, 
-    fret: GuitarFretType = 0,
+    wire: [GuitarWireType, GuitarFretType],
     inputDuration?: TimeType, 
     velocity: number = 85
   ): void
   {
-    if(guitarFretboard[wireNumber] == null) { return; }
-    if(guitarFretboard[wireNumber][fret] == null) { return; }
-    const noteName = guitarFretboard[wireNumber][fret];
+    if(wire == null) { return; }
+    if(guitarFretboard[wire[0]][wire[1]] == null) { return; }
+    const noteName = guitarFretboard[wire[0]][wire[1]];
     this.music.play(this.trackName, [noteName], inputDuration, velocity)
+  }
+
+  SuccessiveSoloPlay(
+    wireList: Array<[GuitarWireType, GuitarFretType] | null>,
+    inputDuration?: TimeType, 
+    velocity: number = 85
+  ): void
+  {
+    const noteList: Array<NoteType | null> = [];
+    for (const wire of wireList) {
+      if(wire == null) { noteList.push(null); continue; }
+      const noteName = guitarFretboard[wire[0]][wire[1]];
+      noteList.push(noteName);
+    }
+    this.music.playSuccessive(this.trackName, noteList, inputDuration, velocity);
   }
 
   next(number?: number):void
