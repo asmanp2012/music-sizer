@@ -9,7 +9,7 @@ export interface GuitarFretboardType extends Record<GuitarWireType, Record<Guita
 export type GuitarWireType = 1 | 2 | 3 | 4 | 5 | 6;
 export type GuitarFretType = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19;
 
-export class Guitar {
+export class SoloGuitar {
   protected music: Music = new Music();
   protected trackName = '';
   constructor(trackName: string, music?: Music) {
@@ -21,7 +21,7 @@ export class Guitar {
     this.music.addInstrument(trackName);
   }
 
-  soloPlay(
+  play(
     wire: [GuitarWireType, GuitarFretType],
     inputDuration?: TimeType, 
     velocity: number = 85
@@ -33,7 +33,7 @@ export class Guitar {
     this.music.play(this.trackName, [noteName], inputDuration, velocity)
   }
 
-  SuccessiveSoloPlay(
+  successivePlay(
     wireList: Array<[GuitarWireType, GuitarFretType] | null>,
     inputDuration?: TimeType, 
     velocity: number = 85
