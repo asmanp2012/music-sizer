@@ -3,7 +3,7 @@
   "scripts": {
     "build": "npx tsc",
     "test": "node ./dist/demo/index.js",
-    "restart": "npm-run-all --sequential build test",
+    "retest": "npm-run-all --sequential build test",
     "clean": "tsc --build --clean"
   },
   "version": "0.0.0",
