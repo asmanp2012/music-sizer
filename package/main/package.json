@@ -1,0 +1,29 @@
+{
+  "name": "@music-sizer/main",
+  "version": "0.0.0",
+  "description": "Music Sizer is a Typescript/Javascript library for make music programmatically.",
+  "main": "index.js",
+  "author": "Godgiven",
+  "type": "module",
+  "types": "index.d.ts",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@tonaljs/note": "^4.6.5",
+    "midi-file": "^1.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/asmanp2012/music-sizer/tree/main/package/main"
+  },
+  "files": [
+    "*.js",
+    "*.js.map",
+    "*.d.ts",
+    "*.d.ts.map",
+    "*.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
