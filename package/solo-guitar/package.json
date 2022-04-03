@@ -1,0 +1,28 @@
+{
+  "name": "@musicSizer/solo-guitar",
+  "version": "0.0.0",
+  "description": "Guitar package for Music Sizer",
+  "main": "index.js",
+  "author": "Godgiven",
+  "type": "module",
+  "types": "index.d.ts",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@musicSizer/main": "^0.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/asmanp2012/music-sizer/tree/main/package/solo-guitar"
+  },
+  "files": [
+    "*.js",
+    "*.js.map",
+    "*.d.ts",
+    "*.d.ts.map",
+    "*.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

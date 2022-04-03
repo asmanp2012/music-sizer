@@ -1,24 +1,60 @@
 {
-  "name": "music-sizer",
-  "scripts": {
-    "build": "npx tsc",
-    "test": "node ./dist/demo/index.js",
-    "retest": "npm-run-all --sequential build test",
-    "clean": "tsc --build --clean"
-  },
-  "version": "0.0.0",
-  "description": "programical dwa",
-  "main": "dist/index.js",
-  "author": "Godgiven <asmanp2012@gmail.com>",
-  "license": "MIT",
+  "name": "@musicSizer/lib",
+  "description": "Typeserver library.",
+  "version": "0.0.1",
+  "main": "./index.js",
+  "type": "module",
   "private": true,
+  "workspaces": [
+    "package/*",
+    "demo"
+  ],
+  "scripts": {
+    "b": "yarn build",
+    "w": "yarn watch",
+    "s": "yarn serve",
+    "c": "yarn clean",
+    "cb": "yarn clean-build",
+    "p": "npm-run-all --sequential prepare-publish ver release",
+    "pp": "npm-run-all --sequential prepare-publish ver-patch release",
+    "up": "yarn upgrade-interactive --latest && git status && bash -c 'read -p \"Continue ?\" -n 1'",
+    "build": "npm-run-all lint build:*",
+    "build:ts": "tsc --build",
+    "lint": "npm-run-all lint:*",
+    "lint:ts": "eslint package/**/*.ts **/*.ts",
+    "prepare": "yarn build",
+    "serve": "node ./demo/index.js",
+    "watch": "npm-run-all --parallel lint watch:*",
+    "watch:ts": "yarn build:ts --watch",
+    "watch:serve": "node ./demo/index.js",
+    "clean": "tsc --build --clean",
+    "clean-build": "npm-run-all --sequential clean build",
+    "postinstall": "yarn build"
+  },
   "dependencies": {
-    "@tonaljs/note": "^4.6.5",
-    "midi-file": "^1.2.2"
+    "debug": "^4.3.4",
+    "jsonwebtoken": "^8.5.1"
   },
   "devDependencies": {
-    "@types/node": "^15.0.3",
+    "@types/debug": "^4.1.7",
+    "@types/jsonwebtoken": "^8.5.8",
+    "@types/node": "^17.0.23",
+    "@typescript-eslint/eslint-plugin": "^5.17.0",
+    "@typescript-eslint/parser": "^5.17.0",
+    "@webcomponents/webcomponentsjs": "^2.5.0",
+    "eslint": "^8.12.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-config-standard-with-typescript": "^21.0.1",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jsdoc": "^38.1.5",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-wc": "^1.3.2",
+    "nodemon": "^2.0.15",
     "npm-run-all": "^4.1.5",
-    "typescript": "^4.2.4"
-  }
+    "typescript": "^4.6.3"
+  },
+  "author": "Godgiven",
+  "license": "Apache-2.0"
 }
+
