@@ -37,7 +37,7 @@ export class SoloGuitar
     this.music.play(this.trackName, [noteName], inputDuration, velocity);
   }
 
-  successivePlay(
+  playSuccessive(
     wireList: Array<[GuitarWireType, GuitarFretType] | null>,
     inputDuration?: TimeType,
     durationPerNote?: TimeType,
