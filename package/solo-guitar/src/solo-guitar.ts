@@ -1,5 +1,5 @@
-import { Music } from '@musicSizer/main';
-import type { TimeType, NoteType, BaseTimeType } from '@musicSizer/main';
+import { Music } from '@music-sizer/main';
+import type { TimeType, NoteType, BaseTimeType } from '@music-sizer/main';
 
 export interface GuitarFretboardType extends Record<GuitarWireType, Record<GuitarFretType, NoteType>>
 {

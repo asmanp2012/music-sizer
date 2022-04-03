@@ -1,5 +1,5 @@
 {
-  "name": "@musicSizer/main",
+  "name": "@music-sizer/main",
   "version": "0.0.0",
   "description": "Music Sizer is a Typescript/Javascript library for make music programmatically.",
   "main": "index.js",

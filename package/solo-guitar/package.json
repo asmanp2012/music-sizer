@@ -1,5 +1,5 @@
 {
-  "name": "@musicSizer/solo-guitar",
+  "name": "@music-sizer/solo-guitar",
   "version": "0.0.0",
   "description": "Guitar package for Music Sizer",
   "main": "index.js",
@@ -8,7 +8,7 @@
   "types": "index.d.ts",
   "license": "Apache-2.0",
   "dependencies": {
-    "@musicSizer/main": "^0.0.0"
+    "@music-sizer/main": "^0.0.0"
   },
   "repository": {
     "type": "git",

@@ -1,5 +1,5 @@
 {
-  "name": "@musicSizer/lib",
+  "name": "@music-sizer/lib",
   "description": "Typeserver library.",
   "version": "0.0.1",
   "main": "./index.js",

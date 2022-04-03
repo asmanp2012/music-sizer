@@ -1,4 +1,4 @@
-import { Music } from '@musicSizer/main';
+import { Music } from '@music-sizer/main';
 
 const myMusic = new Music();
 

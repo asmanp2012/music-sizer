@@ -1,5 +1,5 @@
-import { Music } from '@musicSizer/main';
-import { SoloGuitar } from '@musicSizer/solo-guitar';
+import { Music } from '@music-sizer/main';
+import { SoloGuitar } from '@music-sizer/solo-guitar';
 
 const myMusic = new Music();
 
