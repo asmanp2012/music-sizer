@@ -16,7 +16,7 @@ guitar.next(3);
 
 /* ********* Start Bar 1 ************ */
 /* ********* Start Bar 2 ************ */
-guitar.successivePlay(
+guitar.playSuccessive(
   [[3, 2], [2, 0], [2, 1], [1, 0]],
   { type: 3, length: 4 }
 );
@@ -28,7 +28,7 @@ guitar.next(5);
 /* ********* Start Bar 6 ************ */
 for (let index = 0; index < 5; index++)
 {
-  guitar.successivePlay(
+  guitar.playSuccessive(
     [[1, 1], [1, 0]],
     { type: 3, length: 2 }
   );
@@ -40,7 +40,7 @@ for (let index = 0; index < 5; index++)
 /* ********* Start Bar 8 ************ */
 for (let index = 0; index < 3; index++)
 {
-  guitar.successivePlay(
+  guitar.playSuccessive(
     [[2, 3], null, [1, 0]],
     { type: 3, length: 3 }
   );
@@ -49,7 +49,7 @@ for (let index = 0; index < 3; index++)
 }
 
 /* ********* Start Bar 9 ************ */
-guitar.successivePlay(
+guitar.playSuccessive(
   [[2, 3], [1, 0]],
   { type: 3, length: 2 }
 );
@@ -60,7 +60,7 @@ guitar.next(2);
 /* ********* Start Bar 12 ************ */
 for (let index = 0; index < 3; index++)
 {
-  guitar.successivePlay(
+  guitar.playSuccessive(
     [[2, 3], [2, 1]],
     { type: 3, length: 2 }
   );
@@ -75,7 +75,7 @@ guitar.next();
 guitar.play([3, 2], { type: 3, length: 1 });
 guitar.next(2);
 
-guitar.successivePlay(
+guitar.playSuccessive(
   [[3, 1], [3, 2]],
   { type: 3, length: 1 }
 );
@@ -97,7 +97,7 @@ guitar.next(3);
 
 /* ********* Start Bar 17 ************ */
 /* ********* Start Bar 18 ************ */
-guitar.successivePlay(
+guitar.playSuccessive(
   [[3, 2], [2, 0], [2, 1], [1, 0]],
   { type: 3, length: 4 }
 );
@@ -109,7 +109,7 @@ guitar.next(5);
 /* ********* Start Bar 22 ************ */
 for (let index = 0; index < 5; index++)
 {
-  guitar.successivePlay(
+  guitar.playSuccessive(
     [[1, 1], [1, 0]],
     { type: 3, length: 2 }
   );
@@ -121,7 +121,7 @@ for (let index = 0; index < 5; index++)
 /* ********* Start Bar 24 ************ */
 for (let index = 0; index < 3; index++)
 {
-  guitar.successivePlay(
+  guitar.playSuccessive(
     [[2, 3], null, [1, 0]],
     { type: 3, length: 3 }
   );
@@ -130,7 +130,7 @@ for (let index = 0; index < 3; index++)
 }
 
 /* ********* Start Bar 25 ************ */
-guitar.successivePlay(
+guitar.playSuccessive(
   [[2, 3], [1, 0]],
   { type: 3, length: 2 }
 );
@@ -141,7 +141,7 @@ guitar.next(2);
 /* ********* Start Bar 28 ************ */
 for (let index = 0; index < 3; index++)
 {
-  guitar.successivePlay(
+  guitar.playSuccessive(
     [[2, 3], [2, 1]],
     { type: 3, length: 2 }
   );
@@ -156,7 +156,7 @@ guitar.next();
 guitar.play([3, 2], { type: 3, length: 1 });
 guitar.next(2);
 
-guitar.successivePlay(
+guitar.playSuccessive(
   [[3, 1], [2, 0]],
   { type: 3, length: 1 }
 );
@@ -173,7 +173,7 @@ guitar.play([1, 5], { type: 3, length: 1 });
 guitar.next(1);
 
 /* ********* Start Bar 33 ************ */
-guitar.successivePlay([[1, 3], [1, 1], [1, 0]], { type: 3, length: 3 });
+guitar.playSuccessive([[1, 3], [1, 1], [1, 0]], { type: 3, length: 3 });
 guitar.next(3);
 
 /* ********* Start Bar 34 ************ */
@@ -183,7 +183,7 @@ for (let index = 0; index < 2; index++)
   guitar.play([1, 1], { type: 3, length: 1 });
   guitar.next(1);
 
-  guitar.successivePlay(
+  guitar.playSuccessive(
     [null, [1, 0], [2, 3], null],
     { type: 3, length: 2 }
   );
@@ -198,7 +198,7 @@ guitar.play([1, 3], { type: 3, length: 1 });
 guitar.next(1);
 
 /* ********* Start Bar 37 ************ */
-guitar.successivePlay([[1, 1], [1, 0], [2, 3]], { type: 3, length: 3 });
+guitar.playSuccessive([[1, 1], [1, 0], [2, 3]], { type: 3, length: 3 });
 guitar.next(3);
 
 /* ********* Start Bar 38 ************ */
@@ -208,7 +208,7 @@ for (let index = 0; index < 2; index++)
   guitar.play([1, 0], { type: 3, length: 1 });
   guitar.next(1);
 
-  guitar.successivePlay(
+  guitar.playSuccessive(
     [null, [2, 3], [2, 1], null],
     { type: 3, length: 2 }
   );
@@ -223,7 +223,7 @@ guitar.play([1, 1], { type: 3, length: 1 });
 guitar.next(1);
 
 /* ********* Start Bar 41 ************ */
-guitar.successivePlay([[1, 0], [2, 3], [2, 1]], { type: 3, length: 3 });
+guitar.playSuccessive([[1, 0], [2, 3], [2, 1]], { type: 3, length: 3 });
 guitar.next(3);
 
 /* ********* Start Bar 42 ************ */
@@ -233,7 +233,7 @@ for (let index = 0; index < 2; index++)
   guitar.play([2, 3], { type: 3, length: 1 });
   guitar.next(1);
 
-  guitar.successivePlay(
+  guitar.playSuccessive(
     [null, [2, 1], [2, 0], null],
     { type: 3, length: 2 }
   );
@@ -248,7 +248,7 @@ guitar.play([2, 3], { type: 3, length: 1 });
 guitar.next(1);
 
 /* ********* Start Bar 45 ************ */
-guitar.successivePlay([[1, 0], [1, 3], [1, 1]], { type: 3, length: 3 });
+guitar.playSuccessive([[1, 0], [1, 3], [1, 1]], { type: 3, length: 3 });
 guitar.next(3);
 
 /* ********* Start Bar 46 ************ */
@@ -269,7 +269,7 @@ guitar.play([1, 5], { type: 3, length: 1 });
 guitar.next(1);
 
 /* ********* Start Bar 50 ************ */
-guitar.successivePlay([[1, 3], [1, 1], [1, 0]], { type: 3, length: 3 });
+guitar.playSuccessive([[1, 3], [1, 1], [1, 0]], { type: 3, length: 3 });
 guitar.next(3);
 
 /* ********* Start Bar 51 ************ */
@@ -279,7 +279,7 @@ for (let index = 0; index < 2; index++)
   guitar.play([1, 1], { type: 3, length: 1 });
   guitar.next(1);
 
-  guitar.successivePlay(
+  guitar.playSuccessive(
     [null, [1, 0], [2, 3], null],
     { type: 3, length: 2 }
   );
@@ -294,7 +294,7 @@ guitar.play([1, 3], { type: 3, length: 1 });
 guitar.next(1);
 
 /* ********* Start Bar 54 ************ */
-guitar.successivePlay([[1, 1], [1, 0], [2, 3]], { type: 3, length: 3 });
+guitar.playSuccessive([[1, 1], [1, 0], [2, 3]], { type: 3, length: 3 });
 guitar.next(3);
 
 /* ********* Start Bar 55 ************ */
@@ -304,7 +304,7 @@ for (let index = 0; index < 2; index++)
   guitar.play([1, 0], { type: 3, length: 1 });
   guitar.next(1);
 
-  guitar.successivePlay(
+  guitar.playSuccessive(
     [null, [2, 3], [2, 1], null],
     { type: 3, length: 2 }
   );
@@ -319,7 +319,7 @@ guitar.play([1, 1], { type: 3, length: 1 });
 guitar.next(1);
 
 /* ********* Start Bar 58 ************ */
-guitar.successivePlay([[1, 0], [2, 3], [2, 1]], { type: 3, length: 3 });
+guitar.playSuccessive([[1, 0], [2, 3], [2, 1]], { type: 3, length: 3 });
 guitar.next(3);
 
 /* ********* Start Bar 59 ************ */
@@ -329,7 +329,7 @@ for (let index = 0; index < 2; index++)
   guitar.play([2, 3], { type: 3, length: 1 });
   guitar.next(1);
 
-  guitar.successivePlay(
+  guitar.playSuccessive(
     [null, [2, 1], [2, 0], null],
     { type: 3, length: 2 }
   );
@@ -344,7 +344,7 @@ guitar.play([1, 0], { type: 3, length: 1 });
 guitar.next(1);
 
 /* ********* Start Bar 62 ************ */
-guitar.successivePlay([[1, 0], [2, 1], [2, 0]], { type: 3, length: 3 });
+guitar.playSuccessive([[1, 0], [2, 1], [2, 0]], { type: 3, length: 3 });
 guitar.next(3);
 
 /* ********* Start Bar 63 ************ */

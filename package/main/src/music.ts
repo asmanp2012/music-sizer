@@ -187,7 +187,13 @@ export class Music
     this.trackList[instrument].delay = duration * inputDuration.length;
   }
 
-  playSuccessive(instrument: string, noteList: Array<number | NoteType | null>, inputDuration?: TimeType, velocity: number = 85): void
+  playSuccessive(
+    instrument: string,
+    noteList: Array<number | NoteType | null>,
+    inputDuration?: TimeType,
+    durationPerNote?: TimeType,
+    velocity: number = 85
+  ): void
   {
     const durationOption: BaseTimeType = {
       ...defultDuration,
@@ -200,7 +206,12 @@ export class Music
     {
       if (note != null)
       {
-        this._play(time, durationTime, instrument, [note], velocity);
+        this._play(
+          time,
+          (durationPerNote != null) ? this.noteNumberToTik(durationOption.type) : durationTime,
+          instrument, [note],
+          velocity
+        );
       }
       time += durationTime;
     }

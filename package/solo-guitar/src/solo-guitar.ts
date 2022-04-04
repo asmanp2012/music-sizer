@@ -37,9 +37,10 @@ export class SoloGuitar
     this.music.play(this.trackName, [noteName], inputDuration, velocity);
   }
 
-  successivePlay(
+  playSuccessive(
     wireList: Array<[GuitarWireType, GuitarFretType] | null>,
     inputDuration?: TimeType,
+    durationPerNote?: TimeType,
     velocity: number = 85
   ): void
   {
@@ -50,7 +51,13 @@ export class SoloGuitar
       const noteName = guitarFretboard[wire[0]][wire[1]];
       noteList.push(noteName);
     }
-    this.music.playSuccessive(this.trackName, noteList, inputDuration, velocity);
+    this.music.playSuccessive(
+      this.trackName,
+      noteList,
+      inputDuration,
+      durationPerNote,
+      velocity
+    );
   }
 
   next(number?: number): void
