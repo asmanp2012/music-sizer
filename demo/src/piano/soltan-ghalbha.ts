@@ -600,6 +600,7 @@ myMusic.play('piano', ['B3'], { type: 3, length: 1 });
 myMusic.playSuccessive(
   'piano', ['Eb4', 'E4'],
   { type: 3, length: 1 },
+  null,
   50
 );
 myMusic.next('piano');
@@ -617,6 +618,7 @@ myMusic.play('piano', ['G3'], { type: 6, length: 3 });
 myMusic.playSuccessive(
   'piano', ['F#4', 'G4'],
   { type: 3, length: 1 },
+  null,
   50
 );
 myMusic.next('piano');

@@ -191,7 +191,7 @@ export class Music
     instrument: string,
     noteList: Array<number | NoteType | null>,
     inputDuration?: TimeType,
-    durationPerNote?: TimeType,
+    durationPerNote?: TimeType | null,
     velocity: number = 85
   ): void
   {
