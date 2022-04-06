@@ -80,6 +80,7 @@
   "references": [
     {"path": "./package/main"},
     {"path": "./package/base-guitar"},
+    {"path": "./package/guitar"},
     {"path": "./demo/"}
   ]
 }
