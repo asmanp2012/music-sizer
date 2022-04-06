@@ -1,5 +1,5 @@
 {
-  "name": "@music-sizer/solo-guitar",
+  "name": "@music-sizer/base-guitar",
   "version": "0.0.0",
   "description": "Guitar package for Music Sizer",
   "main": "index.js",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/asmanp2012/music-sizer/tree/main/package/solo-guitar"
+    "url": "https://github.com/asmanp2012/music-sizer/tree/main/package/base-guitar"
   },
   "files": [
     "*.js",
