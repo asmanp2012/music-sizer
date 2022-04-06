@@ -1,5 +1,5 @@
 import { Music } from '@music-sizer/main';
-import { SoloGuitar } from '@music-sizer/base-guitar';
+import { BaseGuitar } from '@music-sizer/base-guitar';
 
 const myMusic = new Music();
 
@@ -11,7 +11,7 @@ myMusic.timeSignature = {
   denominator: 4
 };
 
-const guitar = new SoloGuitar('guitar', myMusic);
+const guitar = new BaseGuitar('guitar', myMusic);
 guitar.next(3);
 
 /* ********* Start Bar 1 ************ */
@@ -352,4 +352,4 @@ guitar.next(3);
 guitar.play([3, 2], { type: 3, length: 4 });
 guitar.next(6);
 
-myMusic.save('./demo/guitar/soltan-ghalbha.mid');
+myMusic.save('./demo/base-guitar/soltan-ghalbha.mid');

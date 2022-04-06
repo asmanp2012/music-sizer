@@ -27,10 +27,14 @@ interface OptionalDurationType
 
 export type TimeType = BaseTimeType | OptionalDurationType;
 
-const defultDuration: BaseTimeType = {
-  type: 3,
-  length: 1
-};
+interface PlayOptionType
+{
+  instrument: string;
+  noteList?: Array<number | NoteType | null>;
+  inputDuration?: TimeType;
+  distansePerNote?: TimeType;
+  velocity?: number;
+}
 
 export class Music
 {
@@ -40,6 +44,14 @@ export class Music
   timeSignature: TimeSignature = {
     numerator: 4,
     denominator: 4
+  };
+
+  defaultOption = {
+    velocity: 85,
+    inputDuration: {
+      type: 0,
+      length: 1
+    }
   };
 
   save(fileName: string): void
@@ -95,8 +107,8 @@ export class Music
     time: number,
     duration: number,
     instrument: string,
-    noteList: Array<number | NoteType>,
-    velocity: number = 85
+    noteList: Array<number | NoteType | null>,
+    velocity: number = this.defaultOption.velocity
   ): TimeNote
   {
     const timing = { start: time, end: time + duration };
@@ -160,22 +172,29 @@ export class Music
   }
 
   /**
+   * play multi note with the same duration
    *
-   * @param {string} instrument give the instrument key for play
-   * @param {Array<string>} noteList give a array of note for play
-   * @param {TimeType} inputDuration give duration of play
-   * @param {number} velocity volume of play
+   * @param {object} option params as a object
    */
-  play(instrument: string, noteList: Array<number | NoteType>, inputDuration?: TimeType, velocity: number = 85): void
+  play(option: PlayOptionType): void
   {
+    if (option.instrument == null) { return; }
+    if (option.noteList == null) { return; }
+
     const durationOption: BaseTimeType = {
-      ...defultDuration,
-      ...inputDuration
+      ...this.defaultOption.inputDuration,
+      ...option.inputDuration
     };
 
-    const time = (this.trackList[instrument].beat * this.tikPerBeat) + this.trackList[instrument].delay;
-    const duration = this.noteNumberToTik(durationOption.type);
-    this._play(time, duration * durationOption.length, instrument, noteList, velocity);
+    const time = (this.trackList[option.instrument].beat * this.tikPerBeat) + this.trackList[option.instrument].delay;
+    const duration = this.noteNumberToTik(durationOption.type) * durationOption.length;
+    this._play(
+      time,
+      duration,
+      option.instrument,
+      option.noteList,
+      option.velocity
+    );
   }
 
   delay(
@@ -187,30 +206,81 @@ export class Music
     this.trackList[instrument].delay = duration * inputDuration.length;
   }
 
+  /**
+   * play multi note Continuous
+   *
+   * @param {object} option params as a object
+   */
   playSuccessive(
-    instrument: string,
-    noteList: Array<number | NoteType | null>,
-    inputDuration?: TimeType,
-    durationPerNote?: TimeType | null,
-    velocity: number = 85
+    option: PlayOptionType
   ): void
   {
+    if (option.instrument == null) { return; }
+    if (option.noteList == null) { return; }
+    if (option.velocity == null) { option.velocity = this.defaultOption.velocity; }
     const durationOption: BaseTimeType = {
-      ...defultDuration,
-      ...inputDuration
+      ...this.defaultOption.inputDuration,
+      ...option.inputDuration
     };
+
     const duration = this.noteNumberToTik(durationOption.type) * durationOption.length;
-    const durationTime = duration / noteList.length;
-    let time = (this.trackList[instrument].beat * this.tikPerBeat) + this.trackList[instrument].delay;
-    for (const note of noteList)
+    const durationTime = duration / option.noteList.length;
+    let time = (this.trackList[option.instrument].beat * this.tikPerBeat) + this.trackList[option.instrument].delay;
+    for (const note of option.noteList)
     {
       if (note != null)
       {
         this._play(
           time,
-          (durationPerNote != null) ? this.noteNumberToTik(durationOption.type) : durationTime,
-          instrument, [note],
-          velocity
+          (option.distansePerNote != null) ? this.noteNumberToTik(durationOption.type) : durationTime,
+          option.instrument, [note],
+          option.velocity
+        );
+      }
+      time += durationTime;
+    }
+  }
+
+  /**
+   * play multi note with difrent start but same end
+   *
+   * @param {object} option params as a object
+   */
+  playMulti(
+    option: PlayOptionType
+  ): void
+  {
+    if (option.instrument == null) { return; }
+    if (option.noteList == null) { return; }
+    if (option.velocity == null) { option.velocity = this.defaultOption.velocity; }
+
+    const durationOption: BaseTimeType = {
+      ...this.defaultOption.inputDuration,
+      ...option.inputDuration
+    };
+    const duration = this.noteNumberToTik(durationOption.type) * durationOption.length;
+    let durationTime = duration / option.noteList.length;
+
+    if (option.distansePerNote != null)
+    {
+      const distanseTime = this.noteNumberToTik(option.distansePerNote.type as number) * (option.distansePerNote.length as number);
+      if (durationTime > distanseTime)
+      {
+        durationTime = distanseTime;
+      }
+    }
+    let time = (this.trackList[option.instrument].beat * this.tikPerBeat) + this.trackList[option.instrument].delay;
+    const endTime = time + duration;
+    for (const note of option.noteList)
+    {
+      if (note != null)
+      {
+        this._play(
+          time,
+          endTime,
+          option.instrument,
+          [note],
+          option.velocity
         );
       }
       time += durationTime;
@@ -225,21 +295,9 @@ export class Music
 
   noteNumberToTik(typeDuration: number): number
   {
-    if (typeDuration === 0) { return 0; }
+    if (typeDuration === 0) { return this.tikPerBeat; }
     const wholeNote = this.tikPerBeat * this.timeSignature.denominator;
     const duration = wholeNote / Math.pow(2, typeDuration - 1);
     return duration;
   }
-  // playInTime(time: number, duration: number, inestroment: string, noteList: Array<number | string>, velocity: number = 85 ): TimeNote
-  // {
-  //   time = beatNumberToTik(time,this.tikPerBeat);
-  //   duration = beatNumberToTik(duration,this.tikPerBeat);
-  //   return this._play(time,duration,inestroment,noteList, velocity);
-  // }
-
-  // playOnTick(time: number, duration: number, inestroment: string, noteList: Array<number | string>, velocity: number = 85 ): TimeNote
-  // {
-  //   duration = beatNumberToTik(duration,this.tikPerBeat);
-  //   return this._play(time,duration,inestroment,noteList, velocity);
-  // }
 }
