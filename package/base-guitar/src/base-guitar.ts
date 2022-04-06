@@ -10,38 +10,46 @@ export interface GuitarFretboardType extends Record<GuitarWireType, Record<Guita
 export type GuitarWireType = 1 | 2 | 3 | 4 | 5 | 6;
 export type GuitarFretType = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19;
 
-export class SoloGuitar
+export class BaseGuitar
 {
-  protected music: Music = new Music();
-  protected trackName = '';
-  constructor(trackName: string, music?: Music)
+  music: Music = new Music();
+  trackName = 'Base guitar';
+  constructor(trackName?: string, music?: Music)
   {
     if (music != null)
     {
       this.music = music;
     }
 
-    this.trackName = trackName;
-    this.music.addInstrument(trackName);
+    if (trackName != null)
+    {
+      this.trackName = trackName;
+    }
+    this.music.addInstrument(this.trackName);
   }
 
   play(
     wire: [GuitarWireType, GuitarFretType],
     inputDuration?: TimeType,
-    velocity: number = 85
+    velocity?: number
   ): void
   {
     if (wire == null) { return; }
     if (guitarFretboard[wire[0]][wire[1]] == null) { return; }
     const noteName = guitarFretboard[wire[0]][wire[1]];
-    this.music.play(this.trackName, [noteName], inputDuration, velocity);
+    this.music.play({
+      instrument: this.trackName,
+      noteList: [noteName],
+      inputDuration: inputDuration,
+      velocity: velocity
+    });
   }
 
   playSuccessive(
     wireList: Array<[GuitarWireType, GuitarFretType] | null>,
     inputDuration?: TimeType,
     durationPerNote?: TimeType,
-    velocity: number = 85
+    velocity?: number
   ): void
   {
     const noteList: Array<NoteType | null> = [];
@@ -52,11 +60,13 @@ export class SoloGuitar
       noteList.push(noteName);
     }
     this.music.playSuccessive(
-      this.trackName,
-      noteList,
-      inputDuration,
-      durationPerNote,
-      velocity
+      {
+        instrument: this.trackName,
+        noteList,
+        inputDuration: inputDuration,
+        distansePerNote: durationPerNote,
+        velocity: velocity
+      }
     );
   }
 
