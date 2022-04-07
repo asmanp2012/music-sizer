@@ -2,6 +2,15 @@ import { Music } from '@music-sizer/main';
 import { BaseGuitar, GuitarWireType, GuitarFretType } from '@music-sizer/base-guitar';
 import type { TimeType, BaseTimeType } from '@music-sizer/main';
 import type { AchordType } from './achord-list.js';
+
+export interface GuitarPlayOption
+{
+  wireList: Array<GuitarWireType | null>;
+  inputDuration?: TimeType;
+  distansePerNote?: TimeType;
+  velocity?: number;
+}
+
 export class Guitar
 {
   protected base: BaseGuitar = new BaseGuitar();
@@ -35,33 +44,52 @@ export class Guitar
     this.achord = achord;
   }
 
-  play(
-    wire: GuitarWireType,
-    inputDuration?: TimeType,
-    velocity: number = 85
-  ): void
+  /**
+   * play guitar wire
+   *
+   * @param {object} option parms for play guitar
+   */
+  play(option: GuitarPlayOption): void
   {
-    if (wire == null) { return; }
-    this.base.play(
-      [wire, this.getFret(wire)],
-      inputDuration,
-      velocity
-    );
+    if (option.wireList == null) { return; }
+    this.base.play({
+      wireList: option.wireList.map((wire) => wire != null ? [wire, this.getFret(wire)] : null),
+      inputDuration: option.inputDuration,
+      distansePerNote: option.distansePerNote,
+      velocity: option.velocity
+    });
   }
 
-  playSuccessive(
-    wireList: Array<GuitarWireType | null>,
-    inputDuration?: TimeType,
-    durationPerNote?: TimeType,
-    velocity: number = 85
-  ): void
+  /**
+   * play guitar wire in Successive time
+   *
+   * @param {object} option parms for play guitar
+   */
+  playSuccessive(option: GuitarPlayOption): void
   {
-    this.base.playSuccessive(
-      wireList.map((wire) => wire != null ? [wire, this.getFret(wire)] : null),
-      inputDuration,
-      durationPerNote,
-      velocity
-    );
+    if (option.wireList == null) { return; }
+    this.base.playSuccessive({
+      wireList: option.wireList.map((wire) => wire != null ? [wire, this.getFret(wire)] : null),
+      inputDuration: option.inputDuration,
+      distansePerNote: option.distansePerNote,
+      velocity: option.velocity
+    });
+  }
+
+  /**
+   * play multi note with difrent start but same end
+   *
+   * @param {object} option params as a object
+   */
+  playMulti(option: GuitarPlayOption): void
+  {
+    if (option.wireList == null) { return; }
+    this.base.playMulti({
+      wireList: option.wireList.map((wire) => wire != null ? [wire, this.getFret(wire)] : null),
+      inputDuration: option.inputDuration,
+      distansePerNote: option.distansePerNote,
+      velocity: option.velocity
+    });
   }
 
   next(number?: number): void
