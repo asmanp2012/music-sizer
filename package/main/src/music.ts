@@ -270,7 +270,7 @@ export class Music
       }
     }
     let time = (this.trackList[option.instrument].beat * this.tikPerBeat) + this.trackList[option.instrument].delay;
-    const endTime = time + duration;
+    let endTime = duration;
     for (const note of option.noteList)
     {
       if (note != null)
@@ -284,6 +284,7 @@ export class Music
         );
       }
       time += durationTime;
+      endTime -= durationTime;
     }
   }
 
@@ -295,6 +296,7 @@ export class Music
 
   noteNumberToTik(typeDuration: number): number
   {
+    if (typeDuration == null) { return 0; }
     if (typeDuration === 0) { return this.tikPerBeat; }
     const wholeNote = this.tikPerBeat * this.timeSignature.denominator;
     const duration = wholeNote / Math.pow(2, typeDuration - 1);
