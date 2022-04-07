@@ -9,6 +9,15 @@ export interface GuitarFretboardType extends Record<GuitarWireType, Record<Guita
 
 export type GuitarWireType = 1 | 2 | 3 | 4 | 5 | 6;
 export type GuitarFretType = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19;
+export type WireListType = Array<[GuitarWireType, GuitarFretType] | null>;
+
+export interface baseGuitarPlayOption
+{
+  wireList: Array<[GuitarWireType, GuitarFretType] | null>;
+  inputDuration?: TimeType;
+  distansePerNote?: TimeType;
+  velocity?: number;
+}
 
 export class BaseGuitar
 {
@@ -28,46 +37,55 @@ export class BaseGuitar
     this.music.addInstrument(this.trackName);
   }
 
-  play(
-    wire: [GuitarWireType, GuitarFretType],
-    inputDuration?: TimeType,
-    velocity?: number
-  ): void
+  /**
+   * play guitar wire
+   *
+   * @param {object} option parms for play guitar
+   */
+  play(option: baseGuitarPlayOption): void
   {
-    if (wire == null) { return; }
-    if (guitarFretboard[wire[0]][wire[1]] == null) { return; }
-    const noteName = guitarFretboard[wire[0]][wire[1]];
+    if (option.wireList == null) { return; }
+    /* Play with music  */
     this.music.play({
       instrument: this.trackName,
-      noteList: [noteName],
-      inputDuration: inputDuration,
-      velocity: velocity
+      noteList: this.convertWireToNoteList(option.wireList),
+      inputDuration: option.inputDuration,
+      velocity: option.velocity
     });
   }
 
-  playSuccessive(
-    wireList: Array<[GuitarWireType, GuitarFretType] | null>,
-    inputDuration?: TimeType,
-    durationPerNote?: TimeType,
-    velocity?: number
-  ): void
+  /**
+   * play Successive time guitar wire
+   *
+   * @param {object} option parms for play guitar
+   */
+  playSuccessive(option: baseGuitarPlayOption): void
   {
-    const noteList: Array<NoteType | null> = [];
-    for (const wire of wireList)
-    {
-      if (wire == null) { noteList.push(null); continue; }
-      const noteName = guitarFretboard[wire[0]][wire[1]];
-      noteList.push(noteName);
-    }
-    this.music.playSuccessive(
-      {
-        instrument: this.trackName,
-        noteList,
-        inputDuration: inputDuration,
-        distansePerNote: durationPerNote,
-        velocity: velocity
-      }
-    );
+    if (option.wireList == null) { return; }
+    this.music.playSuccessive({
+      instrument: this.trackName,
+      noteList: this.convertWireToNoteList(option.wireList),
+      inputDuration: option.inputDuration,
+      distansePerNote: option.distansePerNote,
+      velocity: option.velocity
+    });
+  }
+
+  /**
+   * play multi note with difrent start but same end
+   *
+   * @param {object} option params as a object
+   */
+  playMulti(option: baseGuitarPlayOption): void
+  {
+    if (option.wireList == null) { return; }
+    this.music.playMulti({
+      instrument: this.trackName,
+      noteList: this.convertWireToNoteList(option.wireList),
+      inputDuration: option.inputDuration,
+      distansePerNote: option.distansePerNote,
+      velocity: option.velocity
+    });
   }
 
   next(number?: number): void
@@ -78,6 +96,18 @@ export class BaseGuitar
   delay(duration: BaseTimeType): void
   {
     this.music.delay(this.trackName, duration);
+  }
+
+  protected convertWireToNoteList(wireList: WireListType): Array<NoteType | null>
+  {
+    const noteList: Array<NoteType | null> = [];
+    for (const wire of wireList)
+    {
+      if (wire == null) { noteList.push(null); continue; }
+      const noteName = guitarFretboard[wire[0]][wire[1]];
+      noteList.push(noteName);
+    }
+    return noteList;
   }
 }
 
