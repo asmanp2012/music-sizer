@@ -1,5 +1,5 @@
 import { Music } from '@music-sizer/main';
-import { BaseGuitar, GuitarWireType, GuitarFretType } from '@music-sizer/base-guitar';
+import { FretGuitar, GuitarWireType, GuitarFretType } from '@music-sizer/fret-guitar';
 import type { TimeType, BaseTimeType } from '@music-sizer/main';
 import type { AchordType } from './achord-list.js';
 
@@ -13,7 +13,7 @@ export interface GuitarPlayOption
 
 export class Guitar
 {
-  protected base: BaseGuitar = new BaseGuitar();
+  protected base: FretGuitar = new FretGuitar();
   protected achord: [GuitarFretType, GuitarFretType, GuitarFretType, GuitarFretType, GuitarFretType, GuitarFretType] = [0, 0, 0, 0, 0, 0];
   protected bar: GuitarFretType = 0;
   protected trackName = 'Guitar';
@@ -24,7 +24,7 @@ export class Guitar
       this.base.music = music;
     }
 
-    this.base = new BaseGuitar(trackName == null ? this.trackName : trackName, music);
+    this.base = new FretGuitar(trackName == null ? this.trackName : trackName, music);
   }
 
   moveBar(fret?: GuitarFretType): void
@@ -53,7 +53,7 @@ export class Guitar
   {
     if (option.wireList == null) { return; }
     this.base.play({
-      wireList: option.wireList.map((wire) => wire != null ? [wire, this.getFret(wire)] : null),
+      wireList: option.wireList.map((wire) => wire != null ? { w: wire, f: this.getFret(wire) } : null),
       inputDuration: option.inputDuration,
       distansePerNote: option.distansePerNote,
       velocity: option.velocity
@@ -69,7 +69,7 @@ export class Guitar
   {
     if (option.wireList == null) { return; }
     this.base.playSuccessive({
-      wireList: option.wireList.map((wire) => wire != null ? [wire, this.getFret(wire)] : null),
+      wireList: option.wireList.map((wire) => wire != null ? { w: wire, f: this.getFret(wire) } : null),
       inputDuration: option.inputDuration,
       distansePerNote: option.distansePerNote,
       velocity: option.velocity
@@ -85,7 +85,7 @@ export class Guitar
   {
     if (option.wireList == null) { return; }
     this.base.playMulti({
-      wireList: option.wireList.map((wire) => wire != null ? [wire, this.getFret(wire)] : null),
+      wireList: option.wireList.map((wire) => wire != null ? { w: wire, f: this.getFret(wire) } : null),
       inputDuration: option.inputDuration,
       distansePerNote: option.distansePerNote,
       velocity: option.velocity
