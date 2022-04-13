@@ -79,7 +79,7 @@
 
   "references": [
     {"path": "./package/main"},
-    {"path": "./package/base-guitar"},
+    {"path": "./package/fret-guitar"},
     {"path": "./package/guitar"},
     {"path": "./demo/"}
   ]

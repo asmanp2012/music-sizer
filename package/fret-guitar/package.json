@@ -1,7 +1,7 @@
 {
-  "name": "@music-sizer/base-guitar",
+  "name": "@music-sizer/fret-guitar",
   "version": "0.0.0",
-  "description": "Guitar package for Music Sizer",
+  "description": "Guitar fret package for Music Sizer",
   "main": "index.js",
   "author": "Godgiven",
   "type": "module",
