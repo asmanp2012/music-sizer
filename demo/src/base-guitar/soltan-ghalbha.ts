@@ -124,7 +124,7 @@ for (let index = 0; index < 5; index++)
 for (let index = 0; index < 3; index++)
 {
   guitar.playSuccessive({
-    wireList: [{ w: 3, f: 2 }, null, { w: 1 }],
+    wireList: [{ w: 2, f: 3 }, null, { w: 1 }],
     inputDuration: { type: 3, length: 3 }
   });
 
@@ -133,7 +133,7 @@ for (let index = 0; index < 3; index++)
 
 /* ********* Start Bar 25 ************ */
 guitar.playSuccessive({
-  wireList: [{ w: 3, f: 2 }, { w: 1 }],
+  wireList: [{ w: 2, f: 3 }, { w: 1 }],
   inputDuration: { type: 3, length: 2 }
 });
 guitar.next(2);
@@ -144,14 +144,14 @@ guitar.next(2);
 for (let index = 0; index < 3; index++)
 {
   guitar.playSuccessive({
-    wireList: [{ w: 3, f: 2 }, { w: 2, f: 1 }],
+    wireList: [{ w: 2, f: 3 }, { w: 2, f: 1 }],
     inputDuration: { type: 3, length: 2 }
   });
 
   guitar.next(3);
 }
 
-guitar.play({ wireList: [{ w: 3 }], inputDuration: { type: 3, length: 1 } });
+guitar.play({ wireList: [{ w: 2 }], inputDuration: { type: 3, length: 1 } });
 guitar.next();
 
 /* ********* Start Bar 29 ************ */
@@ -159,7 +159,7 @@ guitar.play({ wireList: [{ w: 3, f: 2 }], inputDuration: { type: 3, length: 1 } 
 guitar.next(2);
 
 guitar.playSuccessive({
-  wireList: [{ w: 3, f: 1 }, { w: 3 }],
+  wireList: [{ w: 3, f: 1 }, { w: 2 }],
   inputDuration: { type: 3, length: 1 }
 });
 guitar.next(1);
@@ -186,7 +186,7 @@ for (let index = 0; index < 2; index++)
   guitar.next(1);
 
   guitar.playSuccessive({
-    wireList: [null, { w: 1 }, { w: 3, f: 2 }, null],
+    wireList: [null, { w: 1 }, { w: 2, f: 3 }, null],
     inputDuration: { type: 3, length: 2 }
   });
   guitar.next(2);
@@ -200,7 +200,7 @@ guitar.play({ wireList: [{ w: 1, f: 3 }], inputDuration: { type: 3, length: 1 } 
 guitar.next(1);
 
 /* ********* Start Bar 37 ************ */
-guitar.playSuccessive({ wireList: [{ w: 1, f: 1 }, { w: 1 }, { w: 3, f: 2 }], inputDuration: { type: 3, length: 3 } });
+guitar.playSuccessive({ wireList: [{ w: 1, f: 1 }, { w: 1 }, { w: 2, f: 3 }], inputDuration: { type: 3, length: 3 } });
 guitar.next(3);
 
 /* ********* Start Bar 38 ************ */
@@ -211,7 +211,7 @@ for (let index = 0; index < 2; index++)
   guitar.next(1);
 
   guitar.playSuccessive({
-    wireList: [null, { w: 3, f: 2 }, { w: 2, f: 1 }, null],
+    wireList: [null, { w: 2, f: 3 }, { w: 2, f: 1 }, null],
     inputDuration: { type: 3, length: 2 }
   });
   guitar.next(2);
@@ -225,28 +225,28 @@ guitar.play({ wireList: [{ w: 1, f: 1 }], inputDuration: { type: 3, length: 1 } 
 guitar.next(1);
 
 /* ********* Start Bar 41 ************ */
-guitar.playSuccessive({ wireList: [{ w: 1 }, { w: 3, f: 2 }, { w: 2, f: 1 }], inputDuration: { type: 3, length: 3 } });
+guitar.playSuccessive({ wireList: [{ w: 1 }, { w: 2, f: 3 }, { w: 2, f: 1 }], inputDuration: { type: 3, length: 3 } });
 guitar.next(3);
 
 /* ********* Start Bar 42 ************ */
 /* ********* Start Bar 43 ************ */
 for (let index = 0; index < 2; index++)
 {
-  guitar.play({ wireList: [{ w: 3, f: 2 }], inputDuration: { type: 3, length: 1 } });
+  guitar.play({ wireList: [{ w: 2, f: 3 }], inputDuration: { type: 3, length: 1 } });
   guitar.next(1);
 
   guitar.playSuccessive({
-    wireList: [null, { w: 2, f: 1 }, { w: 3 }, null],
+    wireList: [null, { w: 2, f: 1 }, { w: 2 }, null],
     inputDuration: { type: 3, length: 2 }
   });
   guitar.next(2);
 }
 
 /* ********* Start Bar 44 ************ */
-guitar.play({ wireList: [{ w: 3, f: 2 }], inputDuration: { type: 3, length: 1 } });
+guitar.play({ wireList: [{ w: 2, f: 3 }], inputDuration: { type: 3, length: 1 } });
 guitar.next(2);
 
-guitar.play({ wireList: [{ w: 3, f: 2 }], inputDuration: { type: 3, length: 1 } });
+guitar.play({ wireList: [{ w: 2, f: 3 }], inputDuration: { type: 3, length: 1 } });
 guitar.next(1);
 
 /* ********* Start Bar 45 ************ */
@@ -282,7 +282,7 @@ for (let index = 0; index < 2; index++)
   guitar.next(1);
 
   guitar.playSuccessive({
-    wireList: [null, { w: 1 }, { w: 3, f: 2 }, null],
+    wireList: [null, { w: 1 }, { w: 2, f: 3 }, null],
     inputDuration: { type: 3, length: 2 }
   });
   guitar.next(2);
@@ -296,7 +296,7 @@ guitar.play({ wireList: [{ w: 1, f: 3 }], inputDuration: { type: 3, length: 1 } 
 guitar.next(1);
 
 /* ********* Start Bar 54 ************ */
-guitar.playSuccessive({ wireList: [{ w: 1, f: 1 }, { w: 1 }, { w: 3, f: 2 }], inputDuration: { type: 3, length: 3 } });
+guitar.playSuccessive({ wireList: [{ w: 1, f: 1 }, { w: 1 }, { w: 2, f: 3 }], inputDuration: { type: 3, length: 3 } });
 guitar.next(3);
 
 /* ********* Start Bar 55 ************ */
@@ -307,7 +307,7 @@ for (let index = 0; index < 2; index++)
   guitar.next(1);
 
   guitar.playSuccessive({
-    wireList: [null, { w: 3, f: 2 }, { w: 2, f: 1 }, null],
+    wireList: [null, { w: 2, f: 3 }, { w: 2, f: 1 }, null],
     inputDuration: { type: 3, length: 2 }
   });
   guitar.next(2);
@@ -321,32 +321,32 @@ guitar.play({ wireList: [{ w: 1, f: 1 }], inputDuration: { type: 3, length: 1 } 
 guitar.next(1);
 
 /* ********* Start Bar 58 ************ */
-guitar.playSuccessive({ wireList: [{ w: 1 }, { w: 3, f: 2 }, { w: 2, f: 1 }], inputDuration: { type: 3, length: 3 } });
+guitar.playSuccessive({ wireList: [{ w: 1 }, { w: 2, f: 3 }, { w: 2, f: 1 }], inputDuration: { type: 3, length: 3 } });
 guitar.next(3);
 
 /* ********* Start Bar 59 ************ */
 /* ********* Start Bar 60 ************ */
 for (let index = 0; index < 2; index++)
 {
-  guitar.play({ wireList: [{ w: 3, f: 2 }], inputDuration: { type: 3, length: 1 } });
+  guitar.play({ wireList: [{ w: 2, f: 3 }], inputDuration: { type: 3, length: 1 } });
   guitar.next(1);
 
   guitar.playSuccessive({
-    wireList: [null, { w: 2, f: 1 }, { w: 3 }, null],
+    wireList: [null, { w: 2, f: 1 }, { w: 2 }, null],
     inputDuration: { type: 3, length: 2 }
   });
   guitar.next(2);
 }
 
 /* ********* Start Bar 61 ************ */
-guitar.play({ wireList: [{ w: 3, f: 2 }], inputDuration: { type: 3, length: 1 } });
+guitar.play({ wireList: [{ w: 2, f: 3 }], inputDuration: { type: 3, length: 1 } });
 guitar.next(2);
 
 guitar.play({ wireList: [{ w: 1 }], inputDuration: { type: 3, length: 1 } });
 guitar.next(1);
 
 /* ********* Start Bar 62 ************ */
-guitar.playSuccessive({ wireList: [{ w: 1 }, { w: 2, f: 1 }, { w: 3 }], inputDuration: { type: 3, length: 3 } });
+guitar.playSuccessive({ wireList: [{ w: 1 }, { w: 2, f: 1 }, { w: 2 }], inputDuration: { type: 3, length: 3 } });
 guitar.next(3);
 
 /* ********* Start Bar 63 ************ */
