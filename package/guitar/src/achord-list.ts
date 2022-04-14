@@ -1,4 +1,4 @@
-import { GuitarFretType } from '@music-sizer/base-guitar';
+import { GuitarFretType } from '@music-sizer/fret-guitar';
 
 export type AchordType = [GuitarFretType, GuitarFretType, GuitarFretType, GuitarFretType, GuitarFretType, GuitarFretType];
 
