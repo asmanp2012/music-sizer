@@ -4,6 +4,8 @@ import { Guitar, achordList } from '@music-sizer/guitar';
 const myMusic = new Music();
 const guitar = new Guitar('guitar', myMusic);
 
+myMusic.tempo = 60;
+
 myMusic.timeSignature = {
   numerator: 3,
   denominator: 4
