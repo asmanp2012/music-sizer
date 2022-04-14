@@ -4,7 +4,8 @@ export type AchordType = [GuitarFretType, GuitarFretType, GuitarFretType, Guitar
 
 const achordObject = {
   Em: [0, 0, 0, 2, 2, 0],
-  Am: [0, 1, 2, 2, 0, 0]
+  Am: [0, 1, 2, 2, 0, 0],
+  D: [2, 3, 2, 0, 0, 0]
 };
 
 export type Achord = keyof typeof achordObject;
