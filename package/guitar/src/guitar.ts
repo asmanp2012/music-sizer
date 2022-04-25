@@ -81,7 +81,10 @@ export class Guitar
    *
    * @param {object} option params as a object
    */
-  playMulti(option: GuitarPlayOption): void
+  playMulti(
+    option: GuitarPlayOption,
+    sameEnd: boolean = false
+  ): void
   {
     if (option.wireList == null) { return; }
     this.base.playMulti({
@@ -89,7 +92,7 @@ export class Guitar
       inputDuration: option.inputDuration,
       distansePerNote: option.distansePerNote,
       velocity: option.velocity
-    });
+    }, sameEnd);
   }
 
   next(number?: number): void

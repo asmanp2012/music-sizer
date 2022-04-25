@@ -76,7 +76,10 @@ export class FretGuitar
    *
    * @param {object} option params as a object
    */
-  playMulti(option: baseGuitarPlayOption): void
+  playMulti(
+    option: baseGuitarPlayOption,
+    sameEnd: boolean = false
+  ): void
   {
     if (option.wireList == null) { return; }
     this.music.playMulti({
@@ -85,7 +88,7 @@ export class FretGuitar
       inputDuration: option.inputDuration,
       distansePerNote: option.distansePerNote,
       velocity: option.velocity
-    });
+    }, sameEnd);
   }
 
   next(number?: number): void

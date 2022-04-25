@@ -247,7 +247,8 @@ export class Music
    * @param {object} option params as a object
    */
   playMulti(
-    option: PlayOptionType
+    option: PlayOptionType,
+    sameEnd: boolean = false
   ): void
   {
     if (option.instrument == null) { return; }
@@ -284,7 +285,10 @@ export class Music
         );
       }
       time += durationTime;
-      endTime -= durationTime;
+      if (sameEnd === true)
+      {
+        endTime -= durationTime;
+      }
     }
   }
 
