@@ -15,7 +15,7 @@ export interface baseGuitarPlayOption
 {
   wireList: WireListType;
   inputDuration?: TimeType;
-  distansePerNote?: TimeType;
+  distancePerNote?: TimeType;
   velocity?: number;
 }
 
@@ -66,7 +66,7 @@ export class FretGuitar
       instrument: this.trackName,
       noteList: this.convertWireToNoteList(option.wireList),
       inputDuration: option.inputDuration,
-      distansePerNote: option.distansePerNote,
+      distancePerNote: option.distancePerNote,
       velocity: option.velocity
     });
   }
@@ -86,7 +86,7 @@ export class FretGuitar
       instrument: this.trackName,
       noteList: this.convertWireToNoteList(option.wireList),
       inputDuration: option.inputDuration,
-      distansePerNote: option.distansePerNote,
+      distancePerNote: option.distancePerNote,
       velocity: option.velocity
     }, sameEnd);
   }

@@ -32,7 +32,7 @@ interface PlayOptionType
   instrument: string;
   noteList?: Array<number | NoteType | null>;
   inputDuration?: TimeType;
-  distansePerNote?: TimeType;
+  distancePerNote?: TimeType;
   velocity?: number;
 }
 
@@ -232,7 +232,7 @@ export class Music
       {
         this._play(
           time,
-          (option.distansePerNote != null) ? this.noteNumberToTik(durationOption.type) : durationTime,
+          (option.distancePerNote != null) ? this.noteNumberToTik(durationOption.type) : durationTime,
           option.instrument, [note],
           option.velocity
         );
@@ -262,12 +262,12 @@ export class Music
     const duration = this.noteNumberToTik(durationOption.type) * durationOption.length;
     let durationTime = duration / option.noteList.length;
 
-    if (option.distansePerNote != null)
+    if (option.distancePerNote != null)
     {
-      const distanseTime = this.noteNumberToTik(option.distansePerNote.type as number) * (option.distansePerNote.length as number);
-      if (durationTime > distanseTime)
+      const distanceTime = this.noteNumberToTik(option.distancePerNote.type as number) * (option.distancePerNote.length as number);
+      if (durationTime > distanceTime)
       {
-        durationTime = distanseTime;
+        durationTime = distanceTime;
       }
     }
     let time = (this.trackList[option.instrument].beat * this.tikPerBeat) + this.trackList[option.instrument].delay;

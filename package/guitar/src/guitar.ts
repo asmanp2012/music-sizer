@@ -7,7 +7,7 @@ export interface GuitarPlayOption
 {
   wireList: Array<GuitarWireType | null>;
   inputDuration?: TimeType;
-  distansePerNote?: TimeType;
+  distancePerNote?: TimeType;
   velocity?: number;
 }
 
@@ -55,7 +55,7 @@ export class Guitar
     this.base.play({
       wireList: option.wireList.map((wire) => wire != null ? { w: wire, f: this.getFret(wire) } : null),
       inputDuration: option.inputDuration,
-      distansePerNote: option.distansePerNote,
+      distancePerNote: option.distancePerNote,
       velocity: option.velocity
     });
   }
@@ -71,7 +71,7 @@ export class Guitar
     this.base.playSuccessive({
       wireList: option.wireList.map((wire) => wire != null ? { w: wire, f: this.getFret(wire) } : null),
       inputDuration: option.inputDuration,
-      distansePerNote: option.distansePerNote,
+      distancePerNote: option.distancePerNote,
       velocity: option.velocity
     });
   }
@@ -90,7 +90,7 @@ export class Guitar
     this.base.playMulti({
       wireList: option.wireList.map((wire) => wire != null ? { w: wire, f: this.getFret(wire) } : null),
       inputDuration: option.inputDuration,
-      distansePerNote: option.distansePerNote,
+      distancePerNote: option.distancePerNote,
       velocity: option.velocity
     }, sameEnd);
   }
