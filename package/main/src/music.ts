@@ -265,10 +265,7 @@ export class Music
     if (option.distancePerNote != null)
     {
       const distanceTime = this.noteNumberToTik(option.distancePerNote.type as number) * (option.distancePerNote.length as number);
-      if (durationTime > distanceTime)
-      {
-        durationTime = distanceTime;
-      }
+      durationTime = distanceTime;
     }
     let time = (this.trackList[option.instrument].beat * this.tikPerBeat) + this.trackList[option.instrument].delay;
     let endTime = duration;
