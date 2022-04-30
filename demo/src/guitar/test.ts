@@ -1,46 +1,50 @@
 import { Music } from '@music-sizer/main';
 import { Guitar, achordList } from '@music-sizer/guitar';
 
+import type { AchordType } from '@music-sizer/guitar';
+
 const myMusic = new Music();
 const guitar = new Guitar('guitar', myMusic);
 
 myMusic.tempo = 25;
 
 myMusic.timeSignature = {
-  numerator: 4,
+  numerator: 2,
   denominator: 4
 };
 
-guitar.pic(achordList.Em);
-guitar.playMulti({
-  wireList: [6, 5, 4, 3, 2, 1],
-  inputDuration: { type: 3, length: 1 },
-  distancePerNote: { type: 7, length: 1 }
-}, true);
+/**
+ *
+ */
+function rhythm(one: AchordType | null, two: AchordType | null, three: AchordType | null): void
+{
+  if (one != null)
+  {
+    guitar.pic(one);
+  }
+  guitar.down({ inputDuration: { type: 3, length: 1 } });
+  guitar.next(1);
 
-guitar.next(1);
+  if (two != null)
+  {
+    guitar.pic(two);
+  }
+  guitar.up({ inputDuration: { type: 4, length: 1 }, silenceInHalf: true });
 
-guitar.pic(achordList.Am);
-guitar.playMulti({
-  wireList: [1, 2, 3, 4, 5, 6],
-  inputDuration: { type: 4, length: 1 },
-  distancePerNote: { type: 8, length: 1 }
-}, true);
+  guitar.delay({ type: 4, length: 1 });
+  if (three != null)
+  {
+    guitar.pic(three);
+  }
+  guitar.up({ inputDuration: { type: 4, length: 1 } });
+  guitar.next(1);
+}
 
-myMusic.playSuccessive({
-  instrument: 'guitar',
-  noteList: [null, 'C#6'],
-  inputDuration: { type: 4, length: 1 },
-  velocity: 120
-});
-
-myMusic.delay('guitar', { type: 4, length: 1 });
-
-guitar.pic(achordList.Em);
-guitar.playMulti({
-  wireList: [1, 2, 3, 4, 5, 6],
-  inputDuration: { type: 4, length: 1 },
-  distancePerNote: { type: 8, length: 1 }
-}, true);
-
+rhythm(achordList.Em, achordList.Am, achordList.C);
+rhythm(achordList.Am, null, achordList.D);
+rhythm(achordList.Am, achordList.Em, achordList.E);
+rhythm(null, achordList.Em, achordList.Am);
+rhythm(null, null, achordList.Em);
+rhythm(achordList.D, null, achordList.Am);
+rhythm(achordList.D, null, achordList.Dm);
 myMusic.save('./demo/guitar/test.mid');
