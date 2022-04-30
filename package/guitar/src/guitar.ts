@@ -11,6 +11,23 @@ export interface GuitarPlayOption
   velocity?: number;
 }
 
+export interface GuitarRhythmOption
+{
+  inputDuration: TimeType;
+  distancePerNote?: TimeType;
+  silenceInHalf?: boolean;
+  velocity?: number;
+}
+
+type RhythmType = 'down' | 'up' | 'half-down' | 'half-up';
+
+const rhythmWireList: Record<RhythmType, GuitarWireType[]> = {
+  down: [6, 5, 4, 3, 2, 1],
+  up: [1, 2, 3, 4, 5, 6],
+  'half-down': [3, 2, 1],
+  'half-up': [4, 5, 6]
+};
+
 export class Guitar
 {
   protected base: FretGuitar = new FretGuitar();
@@ -24,7 +41,12 @@ export class Guitar
       this.base.music = music;
     }
 
-    this.base = new FretGuitar(trackName == null ? this.trackName : trackName, music);
+    if (trackName != null)
+    {
+      this.trackName = trackName;
+    }
+
+    this.base = new FretGuitar(this.trackName, music);
   }
 
   moveBar(fret?: GuitarFretType): void
@@ -58,6 +80,65 @@ export class Guitar
       distancePerNote: option.distancePerNote,
       velocity: option.velocity
     });
+  }
+
+  down(option: GuitarRhythmOption, delay: boolean = true): void
+  {
+    this.playRhythm('down', option, delay);
+  }
+
+  up(option: GuitarRhythmOption, delay: boolean = true): void
+  {
+    this.playRhythm('up', option, delay);
+  }
+
+  halfDown(option: GuitarRhythmOption, delay: boolean = true): void
+  {
+    this.playRhythm('half-down', option, delay);
+  }
+
+  halfUp(option: GuitarRhythmOption, delay: boolean = true): void
+  {
+    this.playRhythm('half-up', option, delay);
+  }
+
+  playRhythm(type: RhythmType, option: GuitarRhythmOption, delay: boolean = true): void
+  {
+    if (option.inputDuration == null) { return; }
+    const wireList: GuitarWireType[] = rhythmWireList[type] ?? [6, 5, 4, 3, 2, 1];
+    let distancePerNote: TimeType | undefined = { type: 1, length: 0 };
+    if (option.distancePerNote == null)
+    {
+      if (delay === true)
+      {
+        if (option.inputDuration.type != null)
+        {
+          distancePerNote.type = option.inputDuration.type + 4;
+          distancePerNote.length = option.inputDuration.length;
+        }
+      }
+    }
+    else
+    {
+      distancePerNote = option.distancePerNote;
+    }
+
+    this.base.playMulti({
+      wireList: wireList.map((wire) => wire != null ? { w: wire, f: this.getFret(wire) } : null),
+      inputDuration: option.inputDuration,
+      distancePerNote: distancePerNote,
+      velocity: option.velocity
+    }, true);
+
+    if (option.silenceInHalf === true)
+    {
+      this.base.music.playSuccessive({
+        instrument: this.trackName,
+        noteList: [null, 'C#6'],
+        inputDuration: option.inputDuration,
+        velocity: 120
+      });
+    }
   }
 
   /**
