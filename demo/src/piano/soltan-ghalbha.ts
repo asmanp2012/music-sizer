@@ -668,7 +668,7 @@ myMusic.next(instrument, 2);
 myMusic.playSuccessive({
   instrument,
   noteList: [null, 'G4', 'F#4'],
-  inputDuration: { type: 3, length: 1 },
+  inputDuration: { type: 3, length: 1 }
 });
 myMusic.next(instrument);
 /* ********** End Bar ************ */

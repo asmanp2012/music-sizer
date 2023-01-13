@@ -98,7 +98,7 @@ export class Music
         meta: true,
         text: name,
         type: 'trackName',
-        deltaTime: 0,
+        deltaTime: 0
       }]
     };
   }
@@ -125,7 +125,7 @@ export class Music
         channel: 0,
         type: 'noteOn',
         noteNumber: note,
-        velocity: velocity,
+        velocity
       });
     }
 
@@ -139,7 +139,7 @@ export class Music
         channel: 0,
         type: 'noteOff',
         noteNumber: note,
-        velocity: velocity,
+        velocity
       });
     }
 

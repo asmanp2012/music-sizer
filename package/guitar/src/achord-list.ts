@@ -9,7 +9,7 @@ const achordObject = {
   Am: [0, 1, 2, 2, 0, 0],
   D: [2, 3, 2, 0, 0, 0],
   Dm: [1, 3, 2, 0, 0, 0],
-  C: [0, 1, 0, 2, 3, 0],
+  C: [0, 1, 0, 2, 3, 0]
 };
 
 export type Achord = keyof typeof achordObject;

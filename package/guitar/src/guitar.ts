@@ -126,7 +126,7 @@ export class Guitar
     this.base.playMulti({
       wireList: wireList.map((wire) => wire != null ? { w: wire, f: this.getFret(wire) } : null),
       inputDuration: option.inputDuration,
-      distancePerNote: distancePerNote,
+      distancePerNote,
       velocity: option.velocity
     }, true);
 
