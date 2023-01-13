@@ -32,7 +32,7 @@ interface PlayOptionType
   instrument: string;
   noteList?: Array<number | NoteType | null>;
   inputDuration?: TimeType;
-  distansePerNote?: TimeType;
+  distancePerNote?: TimeType;
   velocity?: number;
 }
 
@@ -98,7 +98,7 @@ export class Music
         meta: true,
         text: name,
         type: 'trackName',
-        deltaTime: 0,
+        deltaTime: 0
       }]
     };
   }
@@ -108,11 +108,21 @@ export class Music
     duration: number,
     instrument: string,
     noteList: Array<number | NoteType | null>,
-    velocity: number = this.defaultOption.velocity
+    velocity: number = this.defaultOption.velocity,
+    optionTime: {
+      updateTime: boolean;
+      endAppendToTime: boolean;
+    } = { updateTime: true, endAppendToTime: true }
   ): TimeNote
   {
-    const timing = { start: time, end: time + duration };
-    this.updateTime(instrument, timing);
+    const timing = {
+      start: time,
+      end: (optionTime.endAppendToTime !== false ? time : 0) + duration 
+    };
+    if (optionTime.updateTime !== false)
+    {
+      this.updateTime(instrument, timing);
+    }
     if (velocity === 0) { return timing; }
 
     for (const keyNote of noteList)
@@ -125,7 +135,7 @@ export class Music
         channel: 0,
         type: 'noteOn',
         noteNumber: note,
-        velocity: velocity,
+        velocity
       });
     }
 
@@ -139,7 +149,7 @@ export class Music
         channel: 0,
         type: 'noteOff',
         noteNumber: note,
-        velocity: velocity,
+        velocity
       });
     }
 
@@ -232,7 +242,7 @@ export class Music
       {
         this._play(
           time,
-          (option.distansePerNote != null) ? this.noteNumberToTik(durationOption.type) : durationTime,
+          (option.distancePerNote != null) ? this.noteNumberToTik(durationOption.type) : durationTime,
           option.instrument, [note],
           option.velocity
         );
@@ -247,7 +257,8 @@ export class Music
    * @param {object} option params as a object
    */
   playMulti(
-    option: PlayOptionType
+    option: PlayOptionType,
+    sameEnd: boolean = false
   ): void
   {
     if (option.instrument == null) { return; }
@@ -261,16 +272,13 @@ export class Music
     const duration = this.noteNumberToTik(durationOption.type) * durationOption.length;
     let durationTime = duration / option.noteList.length;
 
-    if (option.distansePerNote != null)
+    if (option.distancePerNote != null)
     {
-      const distanseTime = this.noteNumberToTik(option.distansePerNote.type as number) * (option.distansePerNote.length as number);
-      if (durationTime > distanseTime)
-      {
-        durationTime = distanseTime;
-      }
+      const distanceTime = this.noteNumberToTik(option.distancePerNote.type as number) * (option.distancePerNote.length as number);
+      durationTime = distanceTime;
     }
     let time = (this.trackList[option.instrument].beat * this.tikPerBeat) + this.trackList[option.instrument].delay;
-    const endTime = time + duration;
+    let endTime = duration;
     for (const note of option.noteList)
     {
       if (note != null)
@@ -284,6 +292,10 @@ export class Music
         );
       }
       time += durationTime;
+      if (sameEnd === true)
+      {
+        endTime -= durationTime;
+      }
     }
   }
 
@@ -295,9 +307,10 @@ export class Music
 
   noteNumberToTik(typeDuration: number): number
   {
+    if (typeDuration == null) { return 0; }
     if (typeDuration === 0) { return this.tikPerBeat; }
     const wholeNote = this.tikPerBeat * this.timeSignature.denominator;
     const duration = wholeNote / Math.pow(2, typeDuration - 1);
-    return duration;
+    return Math.floor(duration);
   }
 }

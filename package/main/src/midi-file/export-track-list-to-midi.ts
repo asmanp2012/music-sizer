@@ -9,16 +9,16 @@ import { TrackList } from './type';
 export function exportTrackListToMidi(
   fileName: string,
   trackList: TrackList,
-  tikPerBeat: number,
+  tikPerBeat: number
 ): void
 {
   const midiFile: MidiData = {
     header: {
       format: 1,
       numTracks: Object.keys(trackList).length,
-      ticksPerBeat: tikPerBeat,
+      ticksPerBeat: tikPerBeat
     },
-    tracks: [trackList.header.data],
+    tracks: [trackList.header.data]
   };
 
   for (const key in trackList)
