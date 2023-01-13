@@ -108,11 +108,21 @@ export class Music
     duration: number,
     instrument: string,
     noteList: Array<number | NoteType | null>,
-    velocity: number = this.defaultOption.velocity
+    velocity: number = this.defaultOption.velocity,
+    optionTime: {
+      updateTime: boolean;
+      endAppendToTime: boolean;
+    } = { updateTime: true, endAppendToTime: true }
   ): TimeNote
   {
-    const timing = { start: time, end: time + duration };
-    this.updateTime(instrument, timing);
+    const timing = {
+      start: time,
+      end: (optionTime.endAppendToTime !== false ? time : 0) + duration 
+    };
+    if (optionTime.updateTime !== false)
+    {
+      this.updateTime(instrument, timing);
+    }
     if (velocity === 0) { return timing; }
 
     for (const keyNote of noteList)
@@ -301,6 +311,6 @@ export class Music
     if (typeDuration === 0) { return this.tikPerBeat; }
     const wholeNote = this.tikPerBeat * this.timeSignature.denominator;
     const duration = wholeNote / Math.pow(2, typeDuration - 1);
-    return duration;
+    return Math.floor(duration);
   }
 }
