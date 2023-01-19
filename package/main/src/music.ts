@@ -117,7 +117,7 @@ export class Music
   {
     const timing = {
       start: time,
-      end: (optionTime.endAppendToTime !== false ? time : 0) + duration 
+      end: (optionTime.endAppendToTime !== false ? time : 0) + duration
     };
     if (optionTime.updateTime !== false)
     {
