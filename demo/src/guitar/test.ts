@@ -22,29 +22,35 @@ function rhythm(one: AchordType | null, two: AchordType | null, three: AchordTyp
   {
     guitar.pic(one);
   }
-  guitar.down({ inputDuration: { type: 3, length: 1 } });
+
+  guitar.halfDown_1({ inputDuration: { type: 3, length: 1 } });
+  // guitar.down({ inputDuration: { type: 3, length: 1 } });
   guitar.next(1);
 
   if (two != null)
   {
     guitar.pic(two);
   }
-  guitar.up({ inputDuration: { type: 4, length: 1 }, silenceInHalf: true });
+  guitar.halfDown_2({ inputDuration: { type: 3, length: 1 } });
+  guitar.next(1);
 
-  guitar.delay({ type: 4, length: 1 });
   if (three != null)
   {
     guitar.pic(three);
   }
-  guitar.up({ inputDuration: { type: 4, length: 1 } });
+  guitar.halfDown_2({ inputDuration: { type: 3, length: 1 } });
   guitar.next(1);
 }
 
-rhythm(achordList.Em, achordList.Am, achordList.C);
-rhythm(achordList.Am, null, achordList.D);
-rhythm(achordList.Am, achordList.Em, achordList.E);
-rhythm(null, achordList.Em, achordList.Am);
-rhythm(null, null, achordList.Em);
-rhythm(achordList.D, null, achordList.Am);
-rhythm(achordList.D, null, achordList.Dm);
+rhythm(achordList.Em, null, null);
+rhythm(null, null, null);
+rhythm(null, null, null);
+rhythm(null, achordList.Am, null);
+rhythm(null, null, null);
+rhythm(null, null, null);
+rhythm(null, achordList.Em, null);
+rhythm(achordList.C, null, null);
+rhythm(null, null, null);
+rhythm(achordList.Am, null, null);
+rhythm(null, null, null);
 myMusic.save('./demo/guitar/test.mid');
