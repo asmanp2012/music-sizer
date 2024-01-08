@@ -31,64 +31,44 @@ function rhythm68slowRock(
   {
     guitar.pic(one);
   }
-
   guitar.halfDown_1({ inputDuration: { type: 3, length: 1 } });
-  // guitar.down({ inputDuration: { type: 3, length: 1 } });
-  guitar.next(1);
-
+  guitar.next(2);
   if (two != null)
   {
     guitar.pic(two);
   }
-
-  guitar.halfDown_2({ inputDuration: { type: 3, length: 1 } });
-  // guitar.down({ inputDuration: { type: 3, length: 1 } });
+  guitar.halfDown_2({ inputDuration: { type: 4, length: 1 } });
   guitar.next(1);
-
   if (three != null)
   {
     guitar.pic(three);
   }
-
-  guitar.halfUp_1({ inputDuration: { type: 3, length: 1 } });
-  // guitar.down({ inputDuration: { type: 3, length: 1 } });
+  guitar.halfUp_1({ inputDuration: { type: 4, length: 1 } });
   guitar.next(1);
-
   if (four != null)
   {
     guitar.pic(four);
   }
-
-  guitar.halfDown_2({ inputDuration: { type: 3, length: 1 } });
-  // guitar.down({ inputDuration: { type: 3, length: 1 } });
+  guitar.halfDown_2({ inputDuration: { type: 4, length: 1 } });
   guitar.next(1);
-
   if (five != null)
   {
     guitar.pic(five);
   }
-
-  guitar.halfUp_1({ inputDuration: { type: 3, length: 1 } });
-  // guitar.down({ inputDuration: { type: 3, length: 1 } });
+  guitar.halfUp_1({ inputDuration: { type: 4, length: 1 } });
   guitar.next(1);
-
   if (six != null)
   {
     guitar.pic(six);
   }
-
   guitar.halfDown_1({ inputDuration: { type: 3, length: 1 } });
-  // guitar.down({ inputDuration: { type: 3, length: 1 } });
-  guitar.next(1);
-
+  guitar.next(2);
   if (seven != null)
   {
     guitar.pic(seven);
   }
-
   guitar.halfDown_2({ inputDuration: { type: 3, length: 1 } });
-  // guitar.down({ inputDuration: { type: 3, length: 1 } });
-  guitar.next(1);
+  guitar.next(2);
 
   if (eight != null)
   {
