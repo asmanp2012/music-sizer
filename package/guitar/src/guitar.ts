@@ -19,10 +19,12 @@ export interface GuitarRhythmOption
   velocity?: number;
 }
 
-type RhythmType = 'down' | 'up' | 'half-down1' | 'half-down2' | 'half-up1' | 'half-up2';
+type RhythmType = 'down' | 'up' | 'half-down1' | 'half-down2' | 'half-up1' | 'half-up2' | 'aDown' | 'rDown';
 
 const rhythmWireList: Record<RhythmType, GuitarWireType[]> = {
   down: [6, 5, 4, 3, 2, 1],
+  aDown: [5, 4, 3, 2, 1],
+  rDown: [4, 3, 2, 1],
   up: [1, 2, 3, 4, 5, 6],
   'half-down1': [6, 5, 4],
   'half-down2': [3, 2, 1],
@@ -112,6 +114,16 @@ export class Guitar
   halfUp_2(option: GuitarRhythmOption, delay: boolean = true): void
   {
     this.playRhythm('half-up2', option, delay);
+  }
+
+  aDown(option: GuitarRhythmOption, delay: boolean = true): void
+  {
+    this.playRhythm('aDown', option, delay);
+  }
+
+  rDown(option: GuitarRhythmOption, delay: boolean = true): void
+  {
+    this.playRhythm('rDown', option, delay);
   }
 
   playRhythm(type: RhythmType, option: GuitarRhythmOption, delay: boolean = true): void
