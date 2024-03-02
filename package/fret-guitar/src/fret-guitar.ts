@@ -19,6 +19,11 @@ export interface baseGuitarPlayOption
   velocity?: number;
 }
 
+export interface baseGuitarNotePlayOption extends Partial<baseGuitarPlayOption>
+{
+  noteList?: NoteType[];
+}
+
 export class FretGuitar
 {
   music: Music = new Music();
@@ -85,6 +90,21 @@ export class FretGuitar
     this.music.playMulti({
       instrument: this.trackName,
       noteList: this.convertWireToNoteList(option.wireList),
+      inputDuration: option.inputDuration,
+      distancePerNote: option.distancePerNote,
+      velocity: option.velocity
+    }, sameEnd);
+  }
+
+  playMultiNote(
+    option: baseGuitarNotePlayOption,
+    sameEnd: boolean = false
+  ): void
+  {
+    if (option.noteList == null) { return; }
+    this.music.playMulti({
+      instrument: this.trackName,
+      noteList: option.noteList,
       inputDuration: option.inputDuration,
       distancePerNote: option.distancePerNote,
       velocity: option.velocity

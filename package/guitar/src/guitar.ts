@@ -2,7 +2,6 @@ import { Music } from '@music-sizer/main';
 import { FretGuitar, GuitarWireType, GuitarFretType } from '@music-sizer/fret-guitar';
 import type { TimeType, BaseTimeType } from '@music-sizer/main';
 import type { AchordType } from './achord-list.js';
-
 export interface GuitarPlayOption
 {
   wireList: Array<GuitarWireType | null>;
@@ -124,6 +123,37 @@ export class Guitar
   rDown(option: GuitarRhythmOption, delay: boolean = true): void
   {
     this.playRhythm('rDown', option, delay);
+  }
+
+  syncope(option: GuitarRhythmOption, delay: boolean = true): void
+  {
+    if (option.inputDuration == null) { return; }
+    // const wireList: GuitarWireType[] = [1, 1, 1, 1, 1, 1];
+    let distancePerNote: TimeType | undefined = { type: 1, length: 0 };
+    if (option.distancePerNote == null)
+    {
+      if (delay === true)
+      {
+        if (option.inputDuration.type != null)
+        {
+          distancePerNote.type = option.inputDuration.type + 4;
+          distancePerNote.length = option.inputDuration.length;
+        }
+      }
+    }
+    else
+    {
+      distancePerNote = option.distancePerNote;
+    }
+    this.base.playMultiNote({
+      noteList: [
+        'C#6', 'D#6', 'C#6',
+        'D#6', 'C#6', 'D#6'
+      ],
+      inputDuration: option.inputDuration,
+      distancePerNote,
+      velocity: option.velocity
+    }, true);
   }
 
   playRhythm(type: RhythmType, option: GuitarRhythmOption, delay: boolean = true): void
