@@ -23,7 +23,7 @@ function rhythmWaltz(one: AchordType | null, two: AchordType | null, three: Acho
     guitar.pic(one);
   }
 
-  guitar.halfDown_1({ inputDuration: { type: 3, length: 1 } });
+  guitar.halfDown_1_3({ inputDuration: { type: 3, length: 1 } });
   // guitar.down({ inputDuration: { type: 3, length: 1 } });
   guitar.next(1);
 
@@ -31,21 +31,20 @@ function rhythmWaltz(one: AchordType | null, two: AchordType | null, three: Acho
   {
     guitar.pic(two);
   }
-  guitar.halfDown_2({ inputDuration: { type: 3, length: 1 } });
+  guitar.bDown({ inputDuration: { type: 3, length: 1 } });
   guitar.next(1);
 
   if (three != null)
   {
     guitar.pic(three);
   }
-  guitar.halfDown_2({ inputDuration: { type: 3, length: 1 } });
+  guitar.bDown({ inputDuration: { type: 3, length: 1 } });
   guitar.next(1);
-  guitar.syncope({ inputDuration: { type: 3, length: 1 } })
+  guitar.syncope(2, { inputDuration: { type: 3, length: 1 }, velocity: 150 });
   guitar.next(1);
 }
 
 rhythmWaltz(achordList.Em, null, null);
-
 rhythmWaltz(null, null, null);
 rhythmWaltz(null, null, null);
 rhythmWaltz(null, achordList.Am, null);

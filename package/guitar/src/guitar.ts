@@ -18,13 +18,15 @@ export interface GuitarRhythmOption
   velocity?: number;
 }
 
-type RhythmType = 'down' | 'up' | 'half-down1' | 'half-down2' | 'half-up1' | 'half-up2' | 'aDown' | 'rDown';
+type RhythmType = 'down' | 'up' | 'half-down1' | 'half-down1-3' | 'half-down2' | 'half-up1' | 'half-up2' | 'aDown' | 'bDown' | 'cDown';
 
 const rhythmWireList: Record<RhythmType, GuitarWireType[]> = {
   down: [6, 5, 4, 3, 2, 1],
   aDown: [5, 4, 3, 2, 1],
-  rDown: [4, 3, 2, 1],
+  bDown: [4, 3, 2, 1],
+  cDown: [5, 4, 3, 2],
   up: [1, 2, 3, 4, 5, 6],
+  'half-down1-3': [6, 5, 4, 3],
   'half-down1': [6, 5, 4],
   'half-down2': [3, 2, 1],
   'half-up1': [1, 2, 3],
@@ -100,6 +102,11 @@ export class Guitar
     this.playRhythm('half-down1', option, delay);
   }
 
+  halfDown_1_3(option: GuitarRhythmOption, delay: boolean = true): void
+  {
+    this.playRhythm('half-down1-3', option, delay);
+  }
+
   halfDown_2(option: GuitarRhythmOption, delay: boolean = true): void
   {
     this.playRhythm('half-down2', option, delay);
@@ -120,12 +127,17 @@ export class Guitar
     this.playRhythm('aDown', option, delay);
   }
 
-  rDown(option: GuitarRhythmOption, delay: boolean = true): void
+  bDown(option: GuitarRhythmOption, delay: boolean = true): void
   {
-    this.playRhythm('rDown', option, delay);
+    this.playRhythm('bDown', option, delay);
   }
 
-  syncope(option: GuitarRhythmOption, delay: boolean = true): void
+  cDown(option: GuitarRhythmOption, delay: boolean = true): void
+  {
+    this.playRhythm('cDown', option, delay);
+  }
+
+  syncope(numberNote: number = 1, option: GuitarRhythmOption, delay: boolean = true): void
   {
     if (option.inputDuration == null) { return; }
     // const wireList: GuitarWireType[] = [1, 1, 1, 1, 1, 1];
@@ -136,7 +148,7 @@ export class Guitar
       {
         if (option.inputDuration.type != null)
         {
-          distancePerNote.type = option.inputDuration.type + 4;
+          distancePerNote.type = option.inputDuration.type + 5;
           distancePerNote.length = option.inputDuration.length;
         }
       }
@@ -145,15 +157,28 @@ export class Guitar
     {
       distancePerNote = option.distancePerNote;
     }
-    this.base.playMultiNote({
-      noteList: [
-        'C#6', 'D#6', 'C#6',
-        'D#6', 'C#6', 'D#6'
-      ],
-      inputDuration: option.inputDuration,
-      distancePerNote,
-      velocity: option.velocity
-    }, true);
+    if (numberNote === 1)
+    {
+      this.base.playMultiNote({
+        noteList: [
+          'C#6'
+        ],
+        inputDuration: option.inputDuration,
+        distancePerNote,
+        velocity: option.velocity
+      }, true);
+    }
+    else
+    {
+      this.base.playMultiNote({
+        noteList: [
+          'C#6', 'D#6'
+        ],
+        inputDuration: option.inputDuration,
+        distancePerNote,
+        velocity: option.velocity
+      }, true);
+    }
   }
 
   playRhythm(type: RhythmType, option: GuitarRhythmOption, delay: boolean = true): void

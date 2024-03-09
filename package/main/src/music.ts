@@ -4,7 +4,7 @@ import { TrackList, TimeSignature } from './midi-file/type.js';
 
 type NoteNameType = 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B';
 type NoteExtendType = '#' | 'b' | '';
-type NoteScaleType = '1' | '2' | '3' | '4' | '5' | '6' | '7';
+type NoteScaleType = '1' | '2' | '3' | '4' | '5' | '6' | '7' | '';
 export type NoteType = `${NoteNameType}${NoteExtendType}${NoteScaleType}`;
 
 interface TimeNote
