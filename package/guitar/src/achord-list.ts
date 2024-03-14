@@ -3,7 +3,14 @@ import { GuitarFretType } from '@music-sizer/fret-guitar';
 export type AchordType = [GuitarFretType, GuitarFretType, GuitarFretType, GuitarFretType, GuitarFretType, GuitarFretType];
 
 const achordObject = {
-  C: [0, 1, 0, 2, 3, 3],
+  C: [0, 3, 2, 0, 1, 0],
+  C3: [3, 3, 5, 5, 5, 3],
+  C8: [8, 10, 10, 9, 8, 8],
+  C10: [10, 10, 10, 12, 13, 12],
+  'C#': [1, 4, 3, 1, 2, 1],
+  'C#4': [4, 4, 6, 6, 6, 4],
+  'C#9': [9, 11, 11, 10, 9, 9],
+  'C#11': [11, 11, 11, 13, 14, 13],
   D: [2, 3, 2, 0, 0, 0],
   E: [0, 0, 1, 2, 2, 0],
   F: [1, 1, 2, 2, 3, 3],
