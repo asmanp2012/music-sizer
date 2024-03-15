@@ -16,9 +16,12 @@ export interface GuitarRhythmOption
   distancePerNote?: TimeType;
   silenceInHalf?: boolean;
   velocity?: number;
+  strong?: number;
 }
 
-type RhythmType = 'down' | 'up' | 'half-down1' | 'half-down1-3' | 'half-down2' | 'half-up1' | 'half-up2' | 'aDown' | 'bDown' | 'cDown';
+type RhythmType = 'down' | 'up' | 'half-down1' | 'half-down1-3' | 'half-down1-a' |
+'half-down2' | 'half-up1' |
+'half-up2' | 'aDown' | 'bDown' | 'cDown';
 
 const rhythmWireList: Record<RhythmType, GuitarWireType[]> = {
   down: [6, 5, 4, 3, 2, 1],
@@ -27,6 +30,7 @@ const rhythmWireList: Record<RhythmType, GuitarWireType[]> = {
   cDown: [5, 4, 3, 2],
   up: [1, 2, 3, 4, 5, 6],
   'half-down1-3': [6, 5, 4, 3],
+  'half-down1-a': [5, 4, 3],
   'half-down1': [6, 5, 4],
   'half-down2': [3, 2, 1],
   'half-up1': [1, 2, 3],
@@ -105,6 +109,11 @@ export class Guitar
   halfDown_1_3(option: GuitarRhythmOption, delay: boolean = true): void
   {
     this.playRhythm('half-down1-3', option, delay);
+  }
+
+  halfDown_1_a(option: GuitarRhythmOption, delay: boolean = true): void
+  {
+    this.playRhythm('half-down1-a', option, delay);
   }
 
   halfDown_2(option: GuitarRhythmOption, delay: boolean = true): void
@@ -192,7 +201,7 @@ export class Guitar
       {
         if (option.inputDuration.type != null)
         {
-          distancePerNote.type = option.inputDuration.type + 4;
+          distancePerNote.type = option.inputDuration.type + 4 + (option.strong ?? 0);
           distancePerNote.length = option.inputDuration.length;
         }
       }
@@ -268,7 +277,8 @@ export class Guitar
   protected getFret(wire: GuitarWireType): GuitarFretType
   {
     const arreyKey = wire - 1;
-    const fret = (this.bar as number) + (this.achord[arreyKey] as number);
+    const achord = [...this.achord].reverse();
+    const fret = (this.bar as number) + (achord[arreyKey] as number);
     if (fret > 19 || fret < 0)
     {
       return 0;
