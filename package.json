@@ -15,6 +15,7 @@
     "s": "yarn serve",
     "c": "yarn clean",
     "cb": "yarn clean-build",
+    "sing": "py ./package/singer/0_pipTrack.py",
     "p": "npm-run-all --sequential prepare-publish ver release",
     "pp": "npm-run-all --sequential prepare-publish ver-patch release",
     "up": "yarn upgrade-interactive --latest && git status && bash -c 'read -p \"Continue ?\" -n 1'",

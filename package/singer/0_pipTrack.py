@@ -1,6 +1,9 @@
 import pandas as pd 
 import librosa
-import os
+# import os
+import shutil
+from pathlib import Path
+mainPath = Path().absolute()
 # import numpy as np
 # import sys
 # import wave
@@ -10,25 +13,55 @@ import os
 
 # Load file #################################
 #############################################
-path = os.getcwd()
-file_name = path + "\wav files\/417_l.wav"
-y, sr = librosa.load(file_name)
+print("****************************************************************")
+print("****************************************************************")
+inputFilePath = input('Please input your audio file name: ')
+inputFile = Path(inputFilePath)
+if(not inputFile.is_file()):
+    print('Your file is not exist :(')
+    exit()
+# head, tail = os.path.split(file_name)
+inputFilename = inputFile.name
 
+mainName = inputFilename.split('.')[-2]
+mainDir = mainPath / 'demo' / '0_singer' / mainName
+mainFile = mainDir / inputFilename
+if not mainDir.is_dir():
+    mainDir.mkdir(parents=True, exist_ok=True)
+# print('copy '+file_name+' '+mainDir+filename)
+if(not inputFile.is_file()):
+    shutil.copy(str(inputFile), str(mainFile))
+
+print("****************************************************************")
+print('import from ', mainFile, ' to analyze that')
+print("****************************************************************")
+# y is audio time series. Multi-channel is supported.
+# sr is sampling rate of y
+y, sr = librosa.load(str(mainFile))
+
+print('Your file Sampling rate is ',sr)
 # Detect Frequency ##########################
 #############################################
+
+# The magnitude tells you the strength of the frequency components relative to other components.
+# The pitches is the perceptual correlate of fundamental frequency.
 pitches, magnitudes = librosa.piptrack(y=y, sr=sr)
-# pitches = librosa.cqt_frequencies(200, fmin=librosa.note_to_hz('C1'))
-DF = pd.DataFrame(pitches) 
-
-
-# for i, row in df.iterrows():
-# Calc 
 
 
 
-# Save the dataframe as a csv file ##########
-#############################################
-filename="417.csv"
-if os.path.exists(filename):
-    os.remove(filename)
-DF.to_csv(filename, mode='x')
+
+# Save the data frame pitches as a csv file ###########
+#######################################################
+DPitches = pd.DataFrame(pitches) 
+csvFilePath = mainDir / str(mainName+"-pitches.csv")
+if csvFilePath.is_file():
+    csvFilePath.unlink()
+DPitches.to_csv(csvFilePath, mode='x')
+
+# Save the data frame magnitudes as a csv file ###########
+##########################################################
+DMagnitudes = pd.DataFrame(magnitudes) 
+csvFilePath = mainDir / str(mainName+"-magnitudes.csv")
+if csvFilePath.is_file():
+    csvFilePath.unlink()
+DMagnitudes.to_csv(csvFilePath, mode='x')
