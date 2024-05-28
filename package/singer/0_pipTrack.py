@@ -1,10 +1,11 @@
 import pandas as pd 
 import librosa
+import json
 # import os
 import shutil
 from pathlib import Path
 mainPath = Path().absolute()
-# import numpy as np
+import numpy
 # import sys
 # import wave
 #############################################
@@ -40,6 +41,7 @@ print("****************************************************************")
 y, sr = librosa.load(str(mainFile))
 
 print('Your file Sampling rate is ',sr)
+
 # Detect Frequency ##########################
 #############################################
 
@@ -53,6 +55,7 @@ pitches, magnitudes = librosa.piptrack(y=y, sr=sr)
 # Save the data frame pitches as a csv file ###########
 #######################################################
 DPitches = pd.DataFrame(pitches) 
+# NPitches = DPitches.to_numpy()
 csvFilePath = mainDir / str(mainName+"-pitches.csv")
 if csvFilePath.is_file():
     csvFilePath.unlink()
@@ -61,7 +64,35 @@ DPitches.to_csv(csvFilePath, mode='x')
 # Save the data frame magnitudes as a csv file ###########
 ##########################################################
 DMagnitudes = pd.DataFrame(magnitudes) 
+NMagnitudes = DMagnitudes.to_numpy()
 csvFilePath = mainDir / str(mainName+"-magnitudes.csv")
 if csvFilePath.is_file():
     csvFilePath.unlink()
 DMagnitudes.to_csv(csvFilePath, mode='x')
+
+Hfrequence = list(range(DMagnitudes.shape[1]))
+countRow = DMagnitudes.shape[0]
+
+for index in range(DMagnitudes.shape[1]):
+    columnData = NMagnitudes[0:countRow, index]
+    HIndex = numpy.argmax(columnData)
+    Hfrequence[index] = DPitches[index][HIndex]
+
+DHfrequence = pd.DataFrame(Hfrequence) 
+csvFilePath = mainDir / str(mainName+"-high-frequence.csv")
+if csvFilePath.is_file():
+    csvFilePath.unlink()
+DHfrequence.to_csv(csvFilePath, mode='x')
+
+
+
+jsonFilePath = mainDir / str(mainName+"-data.json")
+if jsonFilePath.is_file():
+    jsonFilePath.unlink()
+main_data = {
+    "name": mainName,
+    "sampling_rate": sr
+}
+json_object = json.dumps(main_data, indent=4)
+with open(jsonFilePath, "w") as outfile:
+    outfile.write(json_object)
