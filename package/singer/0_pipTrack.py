@@ -6,6 +6,8 @@ import shutil
 from pathlib import Path
 mainPath = Path().absolute()
 import numpy
+import math
+
 # import sys
 # import wave
 #############################################
@@ -47,7 +49,9 @@ print('Your file Sampling rate is ',sr)
 
 # The magnitude tells you the strength of the frequency components relative to other components.
 # The pitches is the perceptual correlate of fundamental frequency.
-pitches, magnitudes = librosa.piptrack(y=y, sr=sr)
+
+n_fftValue = 2048
+pitches, magnitudes = librosa.piptrack(y=y, sr=sr, n_fft=n_fftValue)
 
 
 
@@ -69,14 +73,18 @@ csvFilePath = mainDir / str(mainName+"-magnitudes.csv")
 if csvFilePath.is_file():
     csvFilePath.unlink()
 DMagnitudes.to_csv(csvFilePath, mode='x')
-
-Hfrequence = list(range(DMagnitudes.shape[1]))
+Hfrequence = [
+    list(range(DMagnitudes.shape[1])),
+    list(range(DMagnitudes.shape[1]))
+]
 countRow = DMagnitudes.shape[0]
 
 for index in range(DMagnitudes.shape[1]):
     columnData = NMagnitudes[0:countRow, index]
     HIndex = numpy.argmax(columnData)
-    Hfrequence[index] = DPitches[index][HIndex]
+    Hfrequence[0][index] = DPitches[index][HIndex]
+    if(DPitches[index][HIndex] > 0):        
+        Hfrequence[1][index] = librosa.hz_to_note(math.floor(DPitches[index][HIndex]))
 
 DHfrequence = pd.DataFrame(Hfrequence) 
 csvFilePath = mainDir / str(mainName+"-high-frequence.csv")
@@ -91,7 +99,12 @@ if jsonFilePath.is_file():
     jsonFilePath.unlink()
 main_data = {
     "name": mainName,
-    "sampling_rate": sr
+    "sampling_rate": sr,
+    "length": len(y),
+    "n_fft": n_fftValue,
+    "hope_length": n_fftValue / 4,
+    "length_frame": len(y) / (n_fftValue / 4),
+    "duration": len(y) / sr
 }
 json_object = json.dumps(main_data, indent=4)
 with open(jsonFilePath, "w") as outfile:
