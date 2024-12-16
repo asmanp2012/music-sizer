@@ -2,12 +2,30 @@
 
 This project want to make music about the Singer voice.
 
+your input is:
+
+`file address`: path of file that you want analize
+`time shape`: you want sort of time in `y` line or `x` line
+
 In the first we use `librosa.piptrack` to make a table of `instantaneous frequency at bin **f**, time **t**`.
 
-We collect all of them and save on the `music-freq.csv`.
+We make a directory in `/demo/0_singer/` for your file by your file name and save these file on that:
+`wave file`: is it your file that copy in this directory
+`pitches`: a csv file that have all `frequency at bin **f**, time **t**`
+`magnitudes`: a csv file that have all `volume of frequency at bin **f**, time **t**`
+`high-frequence`: a csv file that have all `loudly frequency at all channel, time **t**`
+`data`: a json file that have all extra data that need in future
+
+for use this package with bash use this command:
 
 ``` bash
-python music_notes_detection.py
+py ./package/singer/0_pipTrack.py "C:\file.wav" y
 ```
 
-After that we know i cant detect which one of the frequency in a frame is important then we should calculate all of the note frequency is exist on the world but for faster use [this site](https://www.liutaiomottola.com/formulae/freqtab.htm) and save it on the `music-freq.csv`.
+or with `yarn` use
+
+```bash
+yarn sing "C:\file.wav" y
+```
+
+or just run `yarn sing` or `py ./package/singer/0_pipTrack.py`
