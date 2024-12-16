@@ -20,10 +20,15 @@ print("****************************************************************")
 print("****************************************************************")
 
 inputFilePath = ''
+timeShape = ''
+if(len(sys.argv) > 2):
+    timeShape = sys.argv[2]
 if(len(sys.argv) > 1):
     inputFilePath = sys.argv[1]
 if(inputFilePath == ''):
     inputFilePath = input('Please input your audio file name: ')
+if(timeShape == ''):
+    timeShape = input('Please input your output time shape x or y: ')
 inputFile = Path(inputFilePath)
 if(not inputFile.is_file()):
     print('Your file is not exist :(')
@@ -64,20 +69,27 @@ pitches, magnitudes = librosa.piptrack(y=y, sr=sr, n_fft=n_fftValue)
 # Save the data frame pitches as a csv file ###########
 #######################################################
 DPitches = pd.DataFrame(pitches) 
+DPitchesOutPut = DPitches
+if(timeShape == 'y'):
+    DPitchesOutPut = DPitchesOutPut.transpose()
 # NPitches = DPitches.to_numpy()
 csvFilePath = mainDir / str(mainName+"-pitches.csv")
 if csvFilePath.is_file():
     csvFilePath.unlink()
-DPitches.to_csv(csvFilePath, mode='x')
+DPitchesOutPut.to_csv(csvFilePath, mode='x')
 
 # Save the data frame magnitudes as a csv file ###########
 ##########################################################
 DMagnitudes = pd.DataFrame(magnitudes) 
+DMagnitudesOutPut = DMagnitudes
 NMagnitudes = DMagnitudes.to_numpy()
 csvFilePath = mainDir / str(mainName+"-magnitudes.csv")
 if csvFilePath.is_file():
     csvFilePath.unlink()
-DMagnitudes.to_csv(csvFilePath, mode='x')
+if(timeShape == 'y'):
+    DMagnitudesOutPut = DMagnitudesOutPut.transpose()
+DMagnitudesOutPut.to_csv(csvFilePath, mode='x')
+
 Hfrequence = [
     list(range(DMagnitudes.shape[1])),
     list(range(DMagnitudes.shape[1]))
@@ -92,11 +104,13 @@ for index in range(DMagnitudes.shape[1]):
         Hfrequence[1][index] = librosa.hz_to_note(math.floor(DPitches[index][HIndex]))
 
 DHfrequence = pd.DataFrame(Hfrequence) 
+DHfrequenceOutPut = DHfrequence
+if(timeShape == 'y'):
+    DHfrequenceOutPut = DHfrequenceOutPut.transpose()
 csvFilePath = mainDir / str(mainName+"-high-frequence.csv")
 if csvFilePath.is_file():
     csvFilePath.unlink()
-DHfrequence.to_csv(csvFilePath, mode='x')
-
+DHfrequenceOutPut.to_csv(csvFilePath, mode='x')
 
 
 jsonFilePath = mainDir / str(mainName+"-data.json")
