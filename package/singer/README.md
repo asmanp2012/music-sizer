@@ -8,9 +8,9 @@ This project want to make music about the Singer voice.
 
 `time shape`: you want sort of time in `y` line or `x` line
 
-In the first we use `librosa.piptrack` to make a table of `instantaneous frequency at bin **f**, time **t**`.
-
 ## outPuts
+
+In the first we use `librosa.piptrack` to make a table of `instantaneous frequency at bin **f**, time **t**`.
 
 We make a directory in `/demo/0_singer/` for your file by your file name and save these file on that:
 
