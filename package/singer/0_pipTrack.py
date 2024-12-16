@@ -7,8 +7,8 @@ from pathlib import Path
 mainPath = Path().absolute()
 import numpy
 import math
+import sys
 
-# import sys
 # import wave
 #############################################
 # np.set_printoptions(threshold=sys.maxsize)
@@ -18,7 +18,12 @@ import math
 #############################################
 print("****************************************************************")
 print("****************************************************************")
-inputFilePath = input('Please input your audio file name: ')
+
+inputFilePath = ''
+if(len(sys.argv) > 1):
+    inputFilePath = sys.argv[1]
+if(inputFilePath == ''):
+    inputFilePath = input('Please input your audio file name: ')
 inputFile = Path(inputFilePath)
 if(not inputFile.is_file()):
     print('Your file is not exist :(')
@@ -31,8 +36,8 @@ mainDir = mainPath / 'demo' / '0_singer' / mainName
 mainFile = mainDir / inputFilename
 if not mainDir.is_dir():
     mainDir.mkdir(parents=True, exist_ok=True)
-# print('copy '+file_name+' '+mainDir+filename)
-if(not inputFile.is_file()):
+print('copy '+inputFilename+' '+mainDir.__str__()+inputFilename)
+if(not mainFile.is_file()):
     shutil.copy(str(inputFile), str(mainFile))
 
 print("****************************************************************")
