@@ -41,7 +41,7 @@ mainDir = mainPath / 'demo' / '0_singer' / mainName
 mainFile = mainDir / inputFilename
 if not mainDir.is_dir():
     mainDir.mkdir(parents=True, exist_ok=True)
-print('copy '+inputFilename+' '+mainDir.__str__()+inputFilename)
+print('copy '+inputFilename+' '+mainDir.__str__()+'\/'+inputFilename)
 if(not mainFile.is_file()):
     shutil.copy(str(inputFile), str(mainFile))
 
@@ -116,14 +116,22 @@ DHfrequenceOutPut.to_csv(csvFilePath, mode='x')
 jsonFilePath = mainDir / str(mainName+"-data.json")
 if jsonFilePath.is_file():
     jsonFilePath.unlink()
+mainSr = sr
+mainLength = len(y)
+mainDuration = mainLength / mainSr
+hopeLength = n_fftValue / 4
+frameLengthFloat = mainLength / hopeLength
+frameLength = int(frameLengthFloat)
+frameRate = mainDuration / frameLength
 main_data = {
     "name": mainName,
-    "sampling_rate": sr,
-    "length": len(y),
+    "sampling_rate": mainSr,
+    "length": mainLength,
     "n_fft": n_fftValue,
-    "hope_length": n_fftValue / 4,
-    "length_frame": len(y) / (n_fftValue / 4),
-    "duration": len(y) / sr
+    "duration": mainDuration,
+    "hope_length": hopeLength,
+    "frame_length": frameLength,
+    "frame_rate": frameRate
 }
 json_object = json.dumps(main_data, indent=4)
 with open(jsonFilePath, "w") as outfile:
