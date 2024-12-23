@@ -41,7 +41,7 @@ mainDir = mainPath / 'demo' / '0_singer' / mainName
 mainFile = mainDir / inputFilename
 if not mainDir.is_dir():
     mainDir.mkdir(parents=True, exist_ok=True)
-print('copy '+inputFilename+' '+mainDir.__str__()+'\/'+inputFilename)
+print('copy '+inputFilename+' '+mainDir.__str__()+'\\'+inputFilename)
 if(not mainFile.is_file()):
     shutil.copy(str(inputFile), str(mainFile))
 
@@ -92,6 +92,7 @@ DMagnitudesOutPut.to_csv(csvFilePath, mode='x')
 
 Hfrequence = [
     list(range(DMagnitudes.shape[1])),
+    list(range(DMagnitudes.shape[1])),
     list(range(DMagnitudes.shape[1]))
 ]
 countRow = DMagnitudes.shape[0]
@@ -102,6 +103,10 @@ for index in range(DMagnitudes.shape[1]):
     Hfrequence[0][index] = DPitches[index][HIndex]
     if(DPitches[index][HIndex] > 0):        
         Hfrequence[1][index] = librosa.hz_to_note(math.floor(DPitches[index][HIndex]))
+        Hfrequence[2][index] = librosa.note_to_hz(Hfrequence[1][index])
+    else:
+        Hfrequence[1][index] = 0
+        Hfrequence[2][index] = 0
 
 DHfrequence = pd.DataFrame(Hfrequence) 
 DHfrequenceOutPut = DHfrequence
