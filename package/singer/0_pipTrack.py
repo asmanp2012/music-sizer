@@ -93,10 +93,14 @@ DMagnitudesOutPut.to_csv(csvFilePath, mode='x')
 Hfrequence = [
     list(range(DMagnitudes.shape[1])),
     list(range(DMagnitudes.shape[1])),
+    list(range(DMagnitudes.shape[1])),
     list(range(DMagnitudes.shape[1]))
+    # list(range(DMagnitudes.shape[1]))
 ]
 countRow = DMagnitudes.shape[0]
-
+last_value = 0
+same_value = 0
+last_same_value = 0
 for index in range(DMagnitudes.shape[1]):
     columnData = NMagnitudes[0:countRow, index]
     HIndex = numpy.argmax(columnData)
@@ -107,7 +111,19 @@ for index in range(DMagnitudes.shape[1]):
     else:
         Hfrequence[1][index] = 0
         Hfrequence[2][index] = 0
-
+# ***************************************************************
+    if(last_value == Hfrequence[2][index]):
+        same_value += 1
+        Hfrequence[3][index] = same_value
+    else:
+        same_value = 1
+        Hfrequence[3][index] = same_value
+    # lastIndex = index
+# ***************************************************************
+    for index2 in range(index, index - same_value, -1):
+        Hfrequence[3][index2] = same_value
+    last_value = Hfrequence[2][index]
+# ***************************************************************
 DHfrequence = pd.DataFrame(Hfrequence) 
 DHfrequenceOutPut = DHfrequence
 if(timeShape == 'y'):
