@@ -157,7 +157,7 @@ export class Guitar
       {
         if (option.inputDuration.type != null)
         {
-          distancePerNote.type = option.inputDuration.type + 5;
+          distancePerNote.type = (option.inputDuration.type as unknown as number) + 5;
           distancePerNote.length = option.inputDuration.length;
         }
       }
@@ -201,7 +201,7 @@ export class Guitar
       {
         if (option.inputDuration.type != null)
         {
-          distancePerNote.type = option.inputDuration.type + 4 + (option.strong ?? 0);
+          distancePerNote.type = (option.inputDuration.type as unknown as number) + 4 + (option.strong ?? 0);
           distancePerNote.length = option.inputDuration.length;
         }
       }
