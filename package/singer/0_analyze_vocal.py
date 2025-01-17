@@ -76,7 +76,7 @@ if(timeShape == 'y'):
 csvFilePath = mainDir / str(mainName+"-pitches.csv")
 if csvFilePath.is_file():
     csvFilePath.unlink()
-DPitchesOutPut.to_csv(csvFilePath, mode='x')
+DPitchesOutPut.to_csv(csvFilePath, mode='x', index=False)
 
 # Save the data frame magnitudes as a csv file ###########
 ##########################################################
@@ -88,7 +88,7 @@ if csvFilePath.is_file():
     csvFilePath.unlink()
 if(timeShape == 'y'):
     DMagnitudesOutPut = DMagnitudesOutPut.transpose()
-DMagnitudesOutPut.to_csv(csvFilePath, mode='x')
+DMagnitudesOutPut.to_csv(csvFilePath, mode='x',  index=False)
 
 Hfrequence = [
     list(range(DMagnitudes.shape[1])),
@@ -131,7 +131,7 @@ if(timeShape == 'y'):
 csvFilePath = mainDir / str(mainName+"-high-frequence.csv")
 if csvFilePath.is_file():
     csvFilePath.unlink()
-DHfrequenceOutPut.to_csv(csvFilePath, mode='x')
+DHfrequenceOutPut.to_csv(csvFilePath, mode='x', index=False)
 
 
 jsonFilePath = mainDir / str(mainName+"-data.json")
