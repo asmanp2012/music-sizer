@@ -55,10 +55,17 @@ data.columns = ["data", "note", "note-data", 'count']
 # Remove leading zeros ========================================================================
 first_valid_index = data['data'].ne(0).idxmax()  # Find the first non-zero value index
 data = data.iloc[first_valid_index:]  # Slice from that index onward
+data.reset_index(drop=True, inplace=True)
 
 # Remove trailing zeros =======================================================================
-last_valid_index = data['data'].ne(0).iloc[::-1].idxmax()  # Find the last non-zero value index
-data = data.iloc[:last_valid_index + 1]  # Slice up to that index
+last_zero_index = data[data["data"] == 0].index.max()
+last_not_zero_index = data[data["data"] != 0].index.max() + 1
+if last_not_zero_index is not None:
+    # حذف ردیف‌ها از آخرین ردیف با مقدار صفر تا انتهای داده‌ها
+    data = data.iloc[0:last_not_zero_index]
+    # print(data)
+# last_valid_index = data['data'].ne(0).iloc[::-1].idxmin()  # Find the last non-zero value index
+# data = data.iloc[:last_valid_index + 1]  # Slice up to that index
 
 # Continue with further processing...
 data['ma'] = data['count'].rolling(window=5).mean()
