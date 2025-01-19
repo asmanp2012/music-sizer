@@ -3,7 +3,9 @@ import json
 import os
 from pathlib import Path
 import sys
-
+import math
+from warnings import simplefilter
+simplefilter(action="ignore", category=pd.errors.PerformanceWarning)
 # Load file #################################
 #############################################
 print("****************************************************************")
@@ -50,6 +52,7 @@ except FileNotFoundError:
   print('CSV file does not exist.')
   exit()
 
+
 data.columns = ["data", "note", "note-data", 'count']
 
 # Remove leading zeros ========================================================================
@@ -61,14 +64,63 @@ data.reset_index(drop=True, inplace=True)
 last_zero_index = data[data["data"] == 0].index.max()
 last_not_zero_index = data[data["data"] != 0].index.max() + 1
 if last_not_zero_index is not None:
-    # حذف ردیف‌ها از آخرین ردیف با مقدار صفر تا انتهای داده‌ها
-    data = data.iloc[0:last_not_zero_index]
-    # print(data)
-# last_valid_index = data['data'].ne(0).iloc[::-1].idxmin()  # Find the last non-zero value index
-# data = data.iloc[:last_valid_index + 1]  # Slice up to that index
+  # حذف ردیف‌ها از آخرین ردیف با مقدار صفر تا انتهای داده‌ها
+  data = data.iloc[0:last_not_zero_index]
+
+last_value = -1
+countAll = data.shape[0]
+for index in range(countAll):
+  nextIndex = index + 1
+  if(
+    nextIndex < countAll and
+    last_value == data["note-data"][nextIndex]
+  ):
+    data.at[index, "note"] = data["note"][nextIndex]
+    data.at[index, "note-data"] = data["note-data"][nextIndex]
+  if(
+    nextIndex + 1 < countAll and
+    data["count"][index] == 1 and
+    last_value == data["note-data"][nextIndex + 1]
+  ):
+    data.at[index, "note"] = data["note"][nextIndex + 1]
+    data.at[index, "note-data"] = data["note-data"][nextIndex + 1]
+  last_value = data["note-data"][index]
+
+last_value = 0
+same_value = 0
+last_same_value = 0
+for index in range(data.shape[0]):
+  if(last_value ==  data['note-data'][index]):
+    same_value += 1
+    data.at[index, "count"] = same_value
+  else:
+    same_value = 1
+    data.at[index, "count"] = same_value
+  # lastIndex = index
+# ***************************************************************
+  for index2 in range(index, index - same_value, -1):
+    data.at[index2, "count"] = same_value
+  last_value = data['note-data'][index]
+
+
+bpmTimeFile = open('./package/singer/datasets/beat-time.json')
+bpmTime = json.load(bpmTimeFile)
+
+
+frame_rate = musicData['frame_rate']
+indexList = data.index.values.tolist()
+attr = '200'
+value = bpmTime.get(attr)
+# for attr, value in bpmTime.items():
+window_frame = math.ceil(value / frame_rate)
+# data[attr] = data['note-data'].rolling(window=window_frame)
+data[attr] = [math.floor(index / window_frame) for index in indexList]
+# print(attr, value, frame_rate, math.ceil(value / frame_rate))
+print(attr, math.ceil(value / frame_rate))
+
 
 # Continue with further processing...
-data['ma'] = data['count'].rolling(window=5).mean()
+
 DHfrequence = pd.DataFrame(data) 
 DHfrequenceOutPut = data
 # if(timeShape == 'y'):
@@ -79,11 +131,3 @@ if csvFilePath.is_file():
 DHfrequenceOutPut.to_csv(csvFilePath, mode='x', index=False)
 
 
-# dataFile = open(dataPath)
-# data = json.load(dataFile)
-
-# bpmTimeFile = open('./datasets/beat-time.json')
-# bpmTime = json.load(bpmTimeFile)
-
-# for attr, value in bpmTime.items():
-#   print(attr, value)
