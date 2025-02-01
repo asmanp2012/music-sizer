@@ -90,6 +90,45 @@ if(timeShape == 'y'):
     DMagnitudesOutPut = DMagnitudesOutPut.transpose()
 DMagnitudesOutPut.to_csv(csvFilePath, mode='x',  index=False)
 
+notsList = numpy.empty(NMagnitudes.shape, dtype = str) 
+# print(DMagnitudes.shape[0] - 1, DMagnitudes.shape[1] - 1)
+# exit
+frequencyList = NMagnitudes
+
+
+for index, data in numpy.ndenumerate(DPitches):
+    # continue
+    if(data > 0):    
+        # if(DPitches[index][index2] > 0):    
+        # print(librosa.hz_to_note(math.floor(DPitches[index][index2])))
+        # print(notsList[index][index2])
+        notsList[index[0]][index[1]] = librosa.hz_to_note(math.floor(data))
+        # print(notsList[index][index2], librosa.note_to_hz(notsList[index][index2]))
+        frequencyList[index[0]][index[1]] = librosa.note_to_hz(notsList[index[0]][index[1]])
+    else:
+        notsList[index[0]][index[1]] = "0"
+        frequencyList[index[0]][index[1]] = 0
+
+DataFrequencyList = pd.DataFrame(frequencyList) 
+frequencyListOutPut = DataFrequencyList
+NFrequencyList = DataFrequencyList.to_numpy()
+csvFilePath = mainDir / str(mainName+"-frequency.csv")
+if csvFilePath.is_file():
+    csvFilePath.unlink()
+if(timeShape == 'y'):
+    DataFrequencyList = DataFrequencyList.transpose()
+DataFrequencyList.to_csv(csvFilePath, mode='x',  index=False)
+
+DataNotsList = pd.DataFrame(notsList) 
+notsListOutPut = DataNotsList
+NNotsList = DataNotsList.to_numpy()
+csvFilePath = mainDir / str(mainName+"-nots.csv")
+if csvFilePath.is_file():
+    csvFilePath.unlink()
+if(timeShape == 'y'):
+    DataNotsList = DataNotsList.transpose()
+DataNotsList.to_csv(csvFilePath, mode='x',  index=False)
+
 Hfrequence = [
     list(range(DMagnitudes.shape[1])),
     list(range(DMagnitudes.shape[1])),
