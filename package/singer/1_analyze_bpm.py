@@ -2,9 +2,8 @@ import pandas as pd
 import json
 import os
 from pathlib import Path
-import math
-from warnings import simplefilter
 import sys
+from warnings import simplefilter
 
 simplefilter(action="ignore", category=pd.errors.PerformanceWarning)
 
@@ -29,15 +28,31 @@ def load_csv(file_path):
         exit()
 
 def preprocess_data(data):
+    # مرحله 1: محاسبه تعداد تکرارها
     data.columns = ["data", "note", "note-data", 'count']
+    # data.columns = ["note", "note-data", "count"]
     
-    # Group by note-data and count occurrences
-    grouped = data.groupby(['note-data']).agg({
-        'note': 'first',  # Get the first note for each group
-        'count': 'count'  # Count occurrences
-    }).reset_index()
+    # مرحله 2: جایگزینی مقادیر
+    # ایجاد یک کپی از DataFrame برای جایگزینی
+    df_copy = data.copy()
+
+    # پیدا کردن ایندکس اولین و آخرین صفر
+    first_not_zero_index = data[data["note-data"] != 0].index.min()
+    last_not_zero_index = data[data["note-data"] != 0].index.max() + 1
+    max_group_size = data[data['data'] != 0]['count'].max()
+    print(max_group_size)
     
-    return grouped
+    # جایگزینی مقادیر با تعداد تکرار کمتر فقط در محدوده غیرصفر
+    for i in range(first_not_zero_index + 1, last_not_zero_index):
+        if df_copy.loc[i - 1, 'count'] >= max_group_size:
+            continue  # نادیده گرفتن این مقدار
+        
+        if df_copy['count'].iloc[i] < df_copy['count'].iloc[i - 1]:
+            df_copy.loc[i, 'note'] = df_copy.loc[i - 1, 'note']
+            df_copy.loc[i, 'note-data'] = df_copy.loc[i - 1, 'note-data']
+            df_copy.loc[i, 'count'] = df_copy.loc[i - 1, 'count'] + 1  # به روزرسانی تعداد تکرار
+
+    return df_copy
 
 def main(input_file):
     # Load JSON file
