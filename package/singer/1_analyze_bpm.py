@@ -15,17 +15,12 @@ print("****************************************************************")
 inputFilePath = ''
 timeShape = ''
 
-# Get command line arguments
-if len(sys.argv) > 2:
-  timeShape = sys.argv[2]
 if len(sys.argv) > 1:
   inputFilePath = sys.argv[1]
 
 # Prompt for input if not provided
 if inputFilePath == '':
   inputFilePath = input('Please input your audio file name: ')
-if timeShape == '':
-  timeShape = input('Please input your output time shape (x or y): ')
 
 # Validate input file path
 inputFile = Path(inputFilePath)
@@ -43,6 +38,7 @@ except (FileNotFoundError, json.JSONDecodeError) as e:
 
 mainDir = os.path.dirname(inputFile)
 mainName = musicData['name']
+timeShape = musicData['time_shape']
 
 # Load CSV file ===============================================================================
 dataPath = os.path.join(mainDir, f"{mainName}-high-frequence.csv")
