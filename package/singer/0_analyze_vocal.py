@@ -9,7 +9,6 @@ import sys
 
 mainPath = Path().absolute()
 
-
 def get_input_file_path():
     if len(sys.argv) > 1:
         return sys.argv[1]
@@ -21,19 +20,21 @@ def get_time_shape():
     return input('Please input your output time shape (x or y): ')
 
 def copy_input_file(input_file, main_dir):
-    main_file = main_dir / input_file
-    print(f"Copying {input_file}")
+    main_file = main_dir / input_file.name
+    print(f"Copying {input_file} to {main_file}")
     if not main_file.is_file():
         shutil.copy(str(input_file), str(main_file))
     return main_file
 
-# Function to load audio file
 def load_audio_file(inputFile):
-    y, sr = librosa.load(str(inputFile))
-    print('Your file Sampling rate is ', sr)
-    return y, sr
+    try:
+        y, sr = librosa.load(str(inputFile))
+        print('Your file Sampling rate is ', sr)
+        return y, sr
+    except Exception as e:
+        print(f"Error loading audio file: {e}")
+        exit()
 
-# Function to save DataFrame to CSV
 def save_dataframe_to_csv(df, file_path, transpose=False):
     if transpose:
         df = df.transpose()
@@ -64,8 +65,8 @@ inputFilePath = get_input_file_path()
 timeShape = get_time_shape()
 
 inputFile = Path(inputFilePath)
-if(not inputFile.is_file()):
-    print('Your file is not exist :(')
+if not inputFile.is_file():
+    print('Your file does not exist :(')
     exit()
 
 inputFilename = inputFile.name
@@ -75,10 +76,10 @@ mainDir = mainPath / 'demo' / '0_singer' / mainName
 if not mainDir.is_dir():
     mainDir.mkdir(parents=True, exist_ok=True)
 
-mainFile = copy_input_file(inputFilename, mainDir)
+mainFile = copy_input_file(inputFile, mainDir)
 
 print("****************************************************************")
-print('import ', inputFilename, ' to analyze that')
+print('Importing ', inputFilename, ' for analysis')
 print("****************************************************************")
 
 # Load audio file
@@ -88,39 +89,31 @@ y, sr = load_audio_file(mainFile)
 n_fftValue = 2048
 pitches, magnitudes = librosa.piptrack(y=y, sr=sr, n_fft=n_fftValue)
 
-# Save the data frame pitches as a csv file ###########
-DPitches = pd.DataFrame(pitches) 
+# Save pitches and magnitudes to CSV
+DPitches = pd.DataFrame(pitches)
 save_dataframe_to_csv(DPitches, mainDir / f"{mainName}-pitches.csv", transpose=(timeShape == 'y'))
 
-# Save the data frame magnitudes as a csv file ###########
-DMagnitudes = pd.DataFrame(magnitudes) 
+DMagnitudes = pd.DataFrame(magnitudes)
 save_dataframe_to_csv(DMagnitudes, mainDir / f"{mainName}-magnitudes.csv", transpose=(timeShape == 'y'))
 
 # Process pitches and magnitudes
 notsList, frequencyList = process_pitches_and_magnitudes(DPitches.to_numpy(), DMagnitudes.to_numpy())
 
-# Save frequency list to CSV
-DataFrequencyList = pd.DataFrame(frequencyList) 
+# Save frequency and notes lists to CSV
+DataFrequencyList = pd.DataFrame(frequencyList)
 save_dataframe_to_csv(DataFrequencyList, mainDir / f"{mainName}-frequency.csv", transpose=(timeShape == 'y'))
 
-# Save notes list to CSV
-DataNotsList = pd.DataFrame(notsList) 
+DataNotsList = pd.DataFrame(notsList)
 save_dataframe_to_csv(DataNotsList, mainDir / f"{mainName}-nots.csv", transpose=(timeShape == 'y'))
 
 # High frequency processing
-HFrequency = [
-    list(range(DMagnitudes.shape[1])),
-    list(range(DMagnitudes.shape[1])),
-    list(range(DMagnitudes.shape[1])),
-    list(range(DMagnitudes.shape[1]))
-]
+HFrequency = [list(range(DMagnitudes.shape[1])) for _ in range(4)]
 
 countRow = DMagnitudes.shape[0]
 last_value = 0
 same_value = 0
 
 for index in range(DMagnitudes.shape[1]):
-# for index, data in numpy.ndenumerate(magnitudes):
     columnData = magnitudes[0:countRow, index]
     HIndex = numpy.argmax(columnData)
     HFrequency[0][index] = DPitches[index][HIndex]
@@ -144,7 +137,7 @@ for index in range(DMagnitudes.shape[1]):
     last_value = HFrequency[2][index]
 
 # Save high frequency data to CSV
-DHFrequency = pd.DataFrame(HFrequency) 
+DHFrequency = pd.DataFrame(HFrequency)
 save_dataframe_to_csv(DHFrequency, mainDir / f"{mainName}-high-frequency.csv", transpose=(timeShape == 'y'))
 
 # Save metadata to JSON
@@ -171,6 +164,5 @@ main_data = {
     "frame_rate": frameRate
 }
 
-json_object = json.dumps(main_data, indent=4)
 with open(jsonFilePath, "w") as outfile:
-    outfile.write(json_object)
+    json.dump(main_data, outfile, indent=4)
