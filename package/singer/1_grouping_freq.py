@@ -40,7 +40,6 @@ def preprocess_data(data):
     first_not_zero_index = data[data["note-data"] != 0].index.min()
     last_not_zero_index = data[data["note-data"] != 0].index.max() + 1
     max_group_size = data[data['data'] != 0]['count'].max()
-    print(max_group_size)
     
     # جایگزینی مقادیر با تعداد تکرار کمتر فقط در محدوده غیرصفر
     for i in range(first_not_zero_index + 1, last_not_zero_index):
@@ -51,7 +50,29 @@ def preprocess_data(data):
             df_copy.loc[i, 'note'] = df_copy.loc[i - 1, 'note']
             df_copy.loc[i, 'note-data'] = df_copy.loc[i - 1, 'note-data']
             df_copy.loc[i, 'count'] = df_copy.loc[i - 1, 'count'] + 1  # به روزرسانی تعداد تکرار
+    return df_copy
 
+def countingData(data):
+    # مرحله 1: محاسبه تعداد تکرارها
+    data.columns = ["data", "note", "note-data", 'count']
+    # data.columns = ["note", "note-data", "count"]
+    
+    # مرحله 2: جایگزینی مقادیر
+    # ایجاد یک کپی از DataFrame برای جایگزینی
+    df_copy = data.copy()
+    first_not_zero_index = data[data["note-data"] != 0].index.min()
+    last_not_zero_index = data[data["note-data"] != 0].index.max() + 1
+    last_value = 0
+    same_value = 0
+    for index in range(first_not_zero_index , last_not_zero_index):
+        if last_value == df_copy.loc[index, 'note-data']:
+            same_value += 1
+        else:
+            same_value = 1
+
+        for index2 in range(index, index - same_value, -1):
+            df_copy.loc[index2, 'count'] = same_value
+        last_value = df_copy.loc[index, 'note-data']
     return df_copy
 
 def main(input_file):
@@ -67,7 +88,7 @@ def main(input_file):
 
     # Preprocess data
     processed_data = preprocess_data(data)
-
+    processed_data = countingData(processed_data)
     # Save output
     output_path = Path(os.path.join(main_dir, f"{main_name}-grouping-frequency.csv"))
     processed_data.to_csv(output_path, index=False)
