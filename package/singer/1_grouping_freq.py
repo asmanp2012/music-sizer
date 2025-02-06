@@ -69,7 +69,7 @@ def main(input_file):
     processed_data = preprocess_data(data)
 
     # Save output
-    output_path = Path(os.path.join(main_dir, f"{main_name}-last-analyze.csv"))
+    output_path = Path(os.path.join(main_dir, f"{main_name}-grouping-frequency.csv"))
     processed_data.to_csv(output_path, index=False)
 
 if __name__ == "__main__":
