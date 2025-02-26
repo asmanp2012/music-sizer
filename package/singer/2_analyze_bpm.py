@@ -8,6 +8,13 @@ from warnings import simplefilter
 
 simplefilter(action="ignore", category=pd.errors.PerformanceWarning)
 
+def save_dataframe_to_csv(df, file_path, transpose=False):
+    if transpose:
+        df = df.transpose()
+    if file_path.is_file():
+        file_path.unlink()
+    df.to_csv(file_path, mode='x', index=False)
+
 def get_input_file_path():
     if len(sys.argv) > 1:
         return sys.argv[1]
@@ -28,7 +35,7 @@ def load_csv(file_path):
         print('CSV file does not exist.')
         exit()
 
-def preprocess_data(data, df):
+def checkBreakPointMatch(df):
     # مرحله 1: محاسبه تعداد تکرارها
     df.columns = ["data", "note", "note-data", 'count']
     # data.columns = ["note", "note-data", "count"]
@@ -52,7 +59,9 @@ def preprocess_data(data, df):
     
     # نمایش نقاط شکست
     print("Breakpoints based on frequency changes:", frequency_changes)
+    return pd.DataFrame(np.array(frequency_changes))
 
+def bpmCheck(breakPointList, data):
     # محاسبه BPM برای نقاط شکست
     bpm_values = range(60, 200)
     matching_bpm = {}
@@ -60,7 +69,9 @@ def preprocess_data(data, df):
     for bpm in bpm_values:
         # listMatchingPoint[bpm] = []
         interval = 60 / bpm  # زمان بین هر ضربه در ثانیه
-        for breakpoint in frequency_changes:
+        # print(breakPointList)
+        for breakpointRow in breakPointList.to_numpy():
+            breakpoint = breakpointRow[0]
             # پیدا کردن نزدیک‌ترین BPM
             if abs((breakpoint * data['frame_rate']) % interval) < data['frame_rate'] / 2:
                 if bpm in matching_bpm:
@@ -80,6 +91,7 @@ def preprocess_data(data, df):
         print(sortDF.head(10))
         best_bpm = max(matching_bpm, key=matching_bpm.get)
         print(f"Best matching BPM: {best_bpm} with {matching_bpm[best_bpm]} matches")
+        return sortDF
     else:
         print("No matching BPM found.")
     # return df_copy
@@ -89,18 +101,24 @@ def main(input_file):
     music_data = load_json(input_file)
     
     main_dir = os.path.dirname(input_file)
+    mainPath = Path(main_dir)
     main_name = music_data['name']
 
     # Load CSV file
     data_path = os.path.join(main_dir, f"{main_name}-grouping-frequency.csv")
     data = load_csv(data_path)
 
+    
     # Preprocess data
-    processed_data = preprocess_data(music_data, data)
+    matchBreakPointList = checkBreakPointMatch(data)
+    save_dataframe_to_csv(matchBreakPointList, mainPath / f"{main_name}-001-break-point-list.csv")
+    bpmList = bpmCheck(matchBreakPointList, music_data)
+    save_dataframe_to_csv(bpmList, mainPath / f"{main_name}-002-bpm-list.csv")
 
     # Save output
     # output_path = Path(os.path.join(main_dir, f"{main_name}-last-analyze.csv"))
     # processed_data.to_csv(output_path, index=False)
+
 
 if __name__ == "__main__":
     input_file_path = get_input_file_path()
