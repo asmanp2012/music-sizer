@@ -4,6 +4,8 @@ import os
 from pathlib import Path
 import sys
 from warnings import simplefilter
+from collections import Counter
+import numpy as np
 
 simplefilter(action="ignore", category=pd.errors.PerformanceWarning)
 
@@ -70,6 +72,37 @@ def save_bpm_data(bpm, frame_rate, frames_per_beat, output_directory):
     
     print(f"BPM data saved in {bpm_file_path}")
 
+def analyze_frequencies(magnitudes, frequencies, frames_per_beat):
+
+    results = []
+
+    # پردازش هر بیت
+    for start in range(0, magnitudes.shape[1], frames_per_beat):
+        end = start + frames_per_beat
+        if end > magnitudes.shape[0]:
+            break
+        
+        # انتخاب فریم‌ها برای این بیت
+        segment_magnitudes = (magnitudes.iloc[:,start:end]).to_numpy()
+        segment_frequencies = (frequencies.iloc[:, start:end]).to_numpy()
+
+        # محاسبه تعداد تکرار فرکانس‌ها
+        freq_counter = Counter(segment_frequencies.flatten())
+        
+        # محاسبه میانگین magnitudes برای هر فرکانس
+        avg_magnitudes = {}
+        for freq in freq_counter.keys():
+            indices = np.where(segment_frequencies == freq)
+            avg_magnitude = np.mean(segment_magnitudes[indices])
+            avg_magnitudes[freq] = avg_magnitude
+
+        # محاسبه نمره نهایی
+        for freq, count in freq_counter.items():
+            score = count * avg_magnitudes[freq]  # نمره نهایی
+            results.append((freq, count, avg_magnitudes[freq], score))
+
+    return results
+
 def main(input_file):
     # Load JSON file
     music_data = load_json(input_file)
@@ -78,8 +111,15 @@ def main(input_file):
     csv_file_path = Path(os.path.dirname(input_file)) / "001_godgiven-002-bpm-list.csv"
     bpm_data = load_csv(csv_file_path)
 
+    main_dir = os.path.dirname(input_file)
     main_name = music_data['name']
     frame_rate = music_data['frame_rate']
+
+    magnitudes_data_path = os.path.join(main_dir, f"{main_name}-magnitudes.csv")
+    magnitudes_data = load_csv(magnitudes_data_path)
+
+    frequency_data_path = os.path.join(main_dir, f"{main_name}-frequency.csv")
+    frequency_data = load_csv(frequency_data_path)
     
     print(f"Main name from JSON: {main_name}")
     print(f"Frame rate (length of each frame in seconds): {frame_rate}")
@@ -94,6 +134,13 @@ def main(input_file):
     # Save BPM data to a new directory
     output_directory = Path(os.path.dirname(input_file)) / "BPM_Data"
     save_bpm_data(selected_bpm, frame_rate, frames_per_beat, output_directory)
+
+    # Frequency
+    # Count
+    # Avg_Magnitude
+    # Score
+    result = pd.DataFrame(analyze_frequencies(magnitudes_data, frequency_data, frames_per_beat))
+    save_dataframe_to_csv(result, output_directory / f"{selected_bpm}" / f"{main_name}-beat-frequencies.csv")
 
 if __name__ == "__main__":
     input_file = get_input_file_path()

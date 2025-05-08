@@ -62,7 +62,7 @@ print("****************************************************************")
 print("****************************************************************")
 
 inputFilePath = get_input_file_path()
-timeShape = get_time_shape()
+timeShape = "x" # get_time_shape()
 
 inputFile = Path(inputFilePath)
 if not inputFile.is_file():
@@ -138,7 +138,7 @@ for index in range(DMagnitudes.shape[1]):
 
 # Save high frequency data to CSV
 DHFrequency = pd.DataFrame(HFrequency)
-save_dataframe_to_csv(DHFrequency, mainDir / f"{mainName}-high-frequency.csv", transpose=(timeShape == 'y'))
+save_dataframe_to_csv(DHFrequency, mainDir / f"{mainName}-high-frequency.csv", transpose=(True))
 
 # Save metadata to JSON
 jsonFilePath = mainDir / f"{mainName}-data.json"
