@@ -19,6 +19,7 @@
     "sing_grouping": "py ./package/singer/1_grouping_freq.py",
     "sing_analyze": "py ./package/singer/2_analyze_bpm.py",
     "sing_speed": "py ./package/singer/3_chose_bpm.py",
+    "sing_signature": "py ./package/singer/4_detect_time_signature.py",
     "p": "npm-run-all --sequential prepare-publish ver release",
     "pp": "npm-run-all --sequential prepare-publish ver-patch release",
     "up": "yarn upgrade-interactive --latest && git status && bash -c 'read -p \"Continue ?\" -n 1'",

@@ -106,14 +106,14 @@ def analyze_frequencies(magnitudes, frequencies, frames_per_beat):
 def main(input_file):
     # Load JSON file
     music_data = load_json(input_file)
-    
-    # Load CSV file
-    csv_file_path = Path(os.path.dirname(input_file)) / "001_godgiven-002-bpm-list.csv"
-    bpm_data = load_csv(csv_file_path)
 
     main_dir = os.path.dirname(input_file)
     main_name = music_data['name']
     frame_rate = music_data['frame_rate']
+
+    # Load CSV file
+    csv_file_path = Path(os.path.dirname(input_file)) / f"{main_name}-002-bpm-list.csv"
+    bpm_data = load_csv(csv_file_path)
 
     magnitudes_data_path = os.path.join(main_dir, f"{main_name}-magnitudes.csv")
     magnitudes_data = load_csv(magnitudes_data_path)
