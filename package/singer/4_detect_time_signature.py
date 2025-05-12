@@ -56,7 +56,27 @@ def detect_time_signature(frequencies_data):
     threshold = calculate_dynamic_threshold(frequencies_data.iloc[:, 0])
     print(f"Threshold: {threshold}")
 
+    # شناسایی کم‌صدا‌ترین بیت و ایندکس آن
+    min_loudness_index = frequencies_data.iloc[:, 2].idxmin()  # ایندکس کم‌صدا‌ترین بیت
+    min_loudness_value = frequencies_data.iloc[min_loudness_index, 2]  # مقدار صدای کم‌صدا‌ترین بیت
+
+    # محاسبه فاصله بین تکرارهای کم‌صدا‌ترین بیت
+    quietest_bit_indices = frequencies_data.index[frequencies_data.iloc[:, 2] == min_loudness_value].tolist()
+    distances = [quietest_bit_indices[i] - quietest_bit_indices[i - 1] for i in range(1, len(quietest_bit_indices))]
+    
+    if distances:
+        average_distance = sum(distances) / len(distances)
+        max_distance = max(distances)  # حداکثر فاصله
+    else:
+        average_distance = None
+        max_distance = None
+
+    print(f"Quietest Bit Value: {min_loudness_value}, Average Distance: {average_distance}")
+
     for denom in denominators:
+        if max_distance is not None and denom > max_distance:
+            continue  # اگر denom بزرگتر از max_distance باشد، ادامه بده
+
         for start in range(0, frequencies_data.shape[0], denom):
             end = start + denom
             if end > frequencies_data.shape[0]:
@@ -67,15 +87,13 @@ def detect_time_signature(frequencies_data):
             # محاسبه تغییرات بین فرکانس‌های متوالی
             changes = segment[segment.columns[0]].diff().fillna(0)  # ستون اول فرکانس
 
-            # print(changes)
             # شناسایی تعداد تغییرات مثبت و منفی با توجه به آستانه
             positive_changes = sum(1 for change in changes if change > threshold)
             negative_changes = sum(1 for change in changes if change < -threshold)
 
-
             changesCount = positive_changes + negative_changes
             # تعیین نسبت با شرط صورت کسر
-            if  changesCount >= 2:  # اطمینان از اینکه صورت کسر کمتر از 2 نشود
+            if changesCount >= 2:  # اطمینان از اینکه صورت کسر کمتر از 2 نشود
                 time_signature = f"{changesCount}/{denom}"
 
                 if changesCount >= 2:  # فقط تایم سیگنیچرهایی با صورت کسر >= 2
@@ -87,7 +105,7 @@ def detect_time_signature(frequencies_data):
     # انتخاب پر تکرارترین تایم سیگنیچر
     if time_signatures:
         detected_signature = max(time_signatures, key=time_signatures.get)
-        return f"Detected Time Signature: {detected_signature}"
+        return f"Detected Time Signature: {detected_signature}, Average Distance to Quietest Bit: {average_distance}"
     
     return "Unknown"
 
