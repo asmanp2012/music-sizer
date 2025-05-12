@@ -3,6 +3,7 @@ import json
 import os
 from pathlib import Path
 import numpy as np
+from scipy.signal import find_peaks
 import sys
 from warnings import simplefilter
 
@@ -49,8 +50,17 @@ def calculate_dynamic_threshold(data):
 
 def detect_time_signature(frequencies_data):
     # لیست مخرج‌های کسر
-    denominators = [2, 4, 8, 16]
+    denominators = [16, 8, 4, 2]
+    numerator = {
+        16: [3],
+        8: [3,4,5,6,7,9,12],
+        4: [2,3,4,5,6],
+        2: [2,3]
+    }
     time_signatures = {}
+    
+    # دیکشنری برای نگهداری تعداد تکرار ایندکس‌های قله‌ها
+    peak_indices_count = {}
 
     # محاسبه آستانه
     threshold = calculate_dynamic_threshold(frequencies_data.iloc[:, 0])
@@ -101,6 +111,25 @@ def detect_time_signature(frequencies_data):
                         time_signatures[time_signature] = 1
                     else:
                         time_signatures[time_signature] += 1
+
+            # شناسایی قله‌ها در بلندی صدا
+            loudness_segment = segment.iloc[:, 2].values  # فرض بر این است که ستون سوم بلندی صدا است
+            peaks, _ = find_peaks(loudness_segment, height=0)  # آستانه را می‌توانید تنظیم کنید
+            
+            # به‌روزرسانی دیکشنری قله‌ها
+            # محاسبه فاصله بین قله‌ها
+            if len(peaks) > 1:
+                for peak in peaks:
+                    if peak in peak_indices_count:
+                        peak_indices_count[peak] += 1
+                    else:
+                        peak_indices_count[peak] = 1
+                # print(peaks)
+                peak_distances = np.diff(peaks)  # فاصله بین قله‌ها
+                print(f"Peak Distances in Segment [{start}:{end}]: {peak_distances}")
+
+    # چاپ دیکشنری قله‌ها
+    print(f"Peak Indices Count: {peak_indices_count}")
 
     # انتخاب پر تکرارترین تایم سیگنیچر
     if time_signatures:
