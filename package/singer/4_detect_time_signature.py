@@ -49,94 +49,45 @@ def calculate_dynamic_threshold(data):
     return min(std_dev_threshold, iqr_threshold)
 
 def detect_time_signature(frequencies_data):
-    # لیست مخرج‌های کسر
     denominators = [16, 8, 4, 2]
     numerator = {
         16: [3],
-        8: [3,4,5,6,7,9,12],
-        4: [2,3,4,5,6],
-        2: [2,3]
+        8: [3, 4, 5, 6, 7, 9, 12],
+        4: [2, 3, 4, 5, 6],
+        2: [2, 3]
     }
     time_signatures = {}
+
+    loudness_segment = frequencies_data.iloc[:, 2].values
+    peaks, _ = find_peaks(loudness_segment, height=0)
+    intervals = np.diff(peaks)
+
+    mean_interval = np.mean(intervals)
+    std_interval = np.std(intervals)
+
+    threshold = round(mean_interval + std_interval)
+    denom = min(denominators, key=lambda x: abs(x - threshold))
     
-    # دیکشنری برای نگهداری تعداد تکرار ایندکس‌های قله‌ها
-    peak_indices_count = {}
+    # تعیین نزدیک‌ترین numerator
+    possible_numerators = numerator[denom]
+    # closest_numerator = max(possible_numerators)  # یا هر منطق دیگری برای انتخاب
+    closest_numerator = find_numerator_with_low_variance(intervals, possible_numerators)
 
-    # محاسبه آستانه
-    threshold = calculate_dynamic_threshold(frequencies_data.iloc[:, 0])
-    print(f"Threshold: {threshold}")
-
-    # شناسایی کم‌صدا‌ترین بیت و ایندکس آن
-    min_loudness_index = frequencies_data.iloc[:, 2].idxmin()  # ایندکس کم‌صدا‌ترین بیت
-    min_loudness_value = frequencies_data.iloc[min_loudness_index, 2]  # مقدار صدای کم‌صدا‌ترین بیت
-
-    # محاسبه فاصله بین تکرارهای کم‌صدا‌ترین بیت
-    quietest_bit_indices = frequencies_data.index[frequencies_data.iloc[:, 2] == min_loudness_value].tolist()
-    distances = [quietest_bit_indices[i] - quietest_bit_indices[i - 1] for i in range(1, len(quietest_bit_indices))]
+    time_signature = f"{closest_numerator}/{denom}"
+    print(f"Denom: {denom}, Time Signature: {time_signature}")
     
-    if distances:
-        average_distance = sum(distances) / len(distances)
-        max_distance = max(distances)  # حداکثر فاصله
-    else:
-        average_distance = None
-        max_distance = None
+    return time_signature
 
-    print(f"Quietest Bit Value: {min_loudness_value}, Average Distance: {average_distance}")
-
-    for denom in denominators:
-        if max_distance is not None and denom > max_distance:
-            continue  # اگر denom بزرگتر از max_distance باشد، ادامه بده
-
-        for start in range(0, frequencies_data.shape[0], denom):
-            end = start + denom
-            if end > frequencies_data.shape[0]:
-                break
-            
-            segment = frequencies_data.iloc[start:end, :]
-            
-            # محاسبه تغییرات بین فرکانس‌های متوالی
-            changes = segment[segment.columns[0]].diff().fillna(0)  # ستون اول فرکانس
-
-            # شناسایی تعداد تغییرات مثبت و منفی با توجه به آستانه
-            positive_changes = sum(1 for change in changes if change > threshold)
-            negative_changes = sum(1 for change in changes if change < -threshold)
-
-            changesCount = positive_changes + negative_changes
-            # تعیین نسبت با شرط صورت کسر
-            if changesCount >= 2:  # اطمینان از اینکه صورت کسر کمتر از 2 نشود
-                time_signature = f"{changesCount}/{denom}"
-
-                if changesCount >= 2:  # فقط تایم سیگنیچرهایی با صورت کسر >= 2
-                    if time_signature not in time_signatures:
-                        time_signatures[time_signature] = 1
-                    else:
-                        time_signatures[time_signature] += 1
-
-            # شناسایی قله‌ها در بلندی صدا
-            loudness_segment = segment.iloc[:, 2].values  # فرض بر این است که ستون سوم بلندی صدا است
-            peaks, _ = find_peaks(loudness_segment, height=0)  # آستانه را می‌توانید تنظیم کنید
-            
-            # به‌روزرسانی دیکشنری قله‌ها
-            # محاسبه فاصله بین قله‌ها
-            if len(peaks) > 1:
-                for peak in peaks:
-                    if peak in peak_indices_count:
-                        peak_indices_count[peak] += 1
-                    else:
-                        peak_indices_count[peak] = 1
-                # print(peaks)
-                peak_distances = np.diff(peaks)  # فاصله بین قله‌ها
-                print(f"Peak Distances in Segment [{start}:{end}]: {peak_distances}")
-
-    # چاپ دیکشنری قله‌ها
-    print(f"Peak Indices Count: {peak_indices_count}")
-
-    # انتخاب پر تکرارترین تایم سیگنیچر
-    if time_signatures:
-        detected_signature = max(time_signatures, key=time_signatures.get)
-        return f"Detected Time Signature: {detected_signature}, Average Distance to Quietest Bit: {average_distance}"
+def find_numerator_with_low_variance(intervals, possible_numerators):
+    variances = {}
     
-    return "Unknown"
+    for num in possible_numerators:
+        adjusted_intervals = [interval for interval in intervals if interval % num == 0]
+        if adjusted_intervals:  # اطمینان از اینکه لیست خالی نیست
+            variances[num] = np.var(adjusted_intervals)
+    
+    closest_numerator = min(variances, key=variances.get)
+    return closest_numerator
 
 def main(input_file):
     # Load JSON file
@@ -175,7 +126,7 @@ def main(input_file):
 
     # تشخیص تایم سیگنیچر
     time_signature = detect_time_signature(frequencies_data)
-    print(f"Detected Time Signature: {time_signature}")
+    print(f"{time_signature}")
 
 if __name__ == "__main__":
     input_file = get_input_file_path()
