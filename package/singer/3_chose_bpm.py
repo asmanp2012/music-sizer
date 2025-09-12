@@ -45,11 +45,12 @@ def select_row_by_bpm(df):
     selected_bpm = int(input("Please enter the BPM: "))
     selected_rows = df[df.iloc[:, 0] == selected_bpm]
     
-    if not selected_rows.empty:
-        return selected_rows, selected_bpm
-    else:
-        print("No row found for the given BPM.")
-        exit()
+    # if not selected_rows.empty:
+    #     return selected_rows, selected_bpm
+    # else:
+    #     print("No row found for the given BPM.")
+    #     exit()
+    return selected_rows, selected_bpm
 
 def calculate_frames_per_beat(bpm, frame_rate):
     interval = bpm / 60
