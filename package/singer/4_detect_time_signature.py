@@ -52,7 +52,7 @@ def detect_time_signature(frequencies_data):
     denominators = [16, 8, 4, 2]
     numerator = {
         16: [3],
-        8: [3, 4, 5, 6, 7, 9, 12],
+        8: [3, 4, 5, 6, 7, 9, 11, 12],
         4: [2, 3, 4, 5, 6],
         2: [2, 3]
     }
@@ -66,6 +66,7 @@ def detect_time_signature(frequencies_data):
     std_interval = np.std(intervals)
 
     threshold = round(mean_interval + std_interval)
+    # print(f"threshold: {threshold}")
     denom = min(denominators, key=lambda x: abs(x - threshold))
     
     # تعیین نزدیک‌ترین numerator
