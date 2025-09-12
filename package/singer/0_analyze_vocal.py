@@ -6,6 +6,7 @@ from pathlib import Path
 import numpy
 import math
 import sys
+import time
 
 mainPath = Path().absolute()
 
@@ -29,8 +30,10 @@ def copy_input_file(input_file, main_dir):
 def load_audio_file(inputFile):
     try:
         y, sr = librosa.load(str(inputFile))
+        tempo, _ = librosa.beat.beat_track(y=y, sr=sr)
+        print(f'Estimated BPM: {tempo}')
         print('Your file Sampling rate is ', sr)
-        return y, sr
+        return y, sr, tempo
     except Exception as e:
         print(f"Error loading audio file: {e}")
         exit()
@@ -57,9 +60,12 @@ def process_pitches_and_magnitudes(pitches, magnitudes):
             
     return notsList, frequencyList
 
+current_time = time.ctime()
 # Load file #################################
 print("****************************************************************")
+print(f"Start At{current_time}")
 print("****************************************************************")
+
 
 inputFilePath = get_input_file_path()
 timeShape = "x" # get_time_shape()
@@ -83,7 +89,7 @@ print('Importing ', inputFilename, ' for analysis')
 print("****************************************************************")
 
 # Load audio file
-y, sr = load_audio_file(mainFile)
+y, sr, tempo= load_audio_file(mainFile)
 
 # Detect Frequency ##########################
 n_fftValue = 2048
@@ -161,8 +167,14 @@ main_data = {
     "duration": mainDuration,
     "hope_length": hopeLength,
     "frame_length": frameLength,
-    "frame_rate": frameRate
+    "frame_rate": frameRate,
+    "tempo": tempo
 }
 
 with open(jsonFilePath, "w") as outfile:
     json.dump(main_data, outfile, indent=4)
+
+end_time = time.ctime()
+print("****************************************************************")
+print(f"End At{end_time}")
+print("****************************************************************")
