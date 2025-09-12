@@ -16,6 +16,7 @@
     "c": "yarn clean",
     "cb": "yarn clean-build",
     "sing": "py ./package/singer/0_analyze_vocal.py",
+    "fast_sing": "py ./package/singer/0_fast_sing.py",
     "sing_grouping": "py ./package/singer/1_grouping_freq.py",
     "sing_analyze": "py ./package/singer/2_analyze_bpm.py",
     "sing_speed": "py ./package/singer/3_chose_bpm.py",
