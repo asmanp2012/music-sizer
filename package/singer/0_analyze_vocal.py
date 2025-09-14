@@ -96,6 +96,36 @@ y, sr, tempo= load_audio_file(mainFile)
 n_fftValue = 2048
 pitches, magnitudes = librosa.piptrack(y=y, sr=sr, n_fft=n_fftValue)
 
+mainSr = sr
+mainLength = len(y)
+mainDuration = mainLength / mainSr
+hopeLength = n_fftValue / 4
+frameLengthFloat = mainLength / hopeLength
+frameLength = int(frameLengthFloat)
+frameRate = mainDuration / frameLength
+
+main_data = {
+    "name": mainName,
+    "sampling_rate": mainSr,
+    "length": mainLength,
+    "n_fft": n_fftValue,
+    "duration": mainDuration,
+    "hope_length": hopeLength,
+    "frame_length": frameLength,
+    "frame_rate": frameRate,
+    "tempo": tempo
+}
+
+# Save metadata to JSON
+jsonFilePath = mainDir / f"{mainName}-data.json"
+if jsonFilePath.is_file():
+    jsonFilePath.unlink()
+
+with open(jsonFilePath, "w") as outfile:
+    json.dump(main_data, outfile, indent=4)
+
+
+
 # Save pitches and magnitudes to CSV
 DPitches = pd.DataFrame(pitches)
 save_dataframe_to_csv(DPitches, mainDir / f"{mainName}-pitches.csv", transpose=(timeShape == 'y'))
@@ -162,35 +192,9 @@ for index in range(DMagnitudes.shape[1]):
 
 # Save high frequency data to CSV
 DHFrequency = pd.DataFrame(HFrequency)
+# DHFrequency.loc[4] = DHFrequency.loc[2].rolling(window=mWinDet).mean() # sma رو انجامش دادم ولی به درد نمیخورد
+# print(DHFrequency.std(axis=1, numeric_only=True))
 save_dataframe_to_csv(DHFrequency, mainDir / f"{mainName}-high-frequency.csv", transpose=(True))
-
-# Save metadata to JSON
-jsonFilePath = mainDir / f"{mainName}-data.json"
-if jsonFilePath.is_file():
-    jsonFilePath.unlink()
-
-mainSr = sr
-mainLength = len(y)
-mainDuration = mainLength / mainSr
-hopeLength = n_fftValue / 4
-frameLengthFloat = mainLength / hopeLength
-frameLength = int(frameLengthFloat)
-frameRate = mainDuration / frameLength
-
-main_data = {
-    "name": mainName,
-    "sampling_rate": mainSr,
-    "length": mainLength,
-    "n_fft": n_fftValue,
-    "duration": mainDuration,
-    "hope_length": hopeLength,
-    "frame_length": frameLength,
-    "frame_rate": frameRate,
-    "tempo": tempo
-}
-
-with open(jsonFilePath, "w") as outfile:
-    json.dump(main_data, outfile, indent=4)
 
 end_time = time.ctime()
 print("****************************************************************")
