@@ -2,6 +2,7 @@ import pandas as pd
 import librosa
 import json
 import shutil
+from collections import defaultdict
 from pathlib import Path
 import numpy
 import math
@@ -121,9 +122,26 @@ same_value = 0
 
 for index in range(DMagnitudes.shape[1]):
     columnData = magnitudes[0:countRow, index]
-    HIndex = numpy.argmax(columnData)
+    # HIndex = numpy.argmax(columnData)
+
+    current_pitches = pitches[:, index]
+    note_counter = defaultdict(lambda: {'count': 0, 'total_mag': 0, 'avg_mag': 0, 'score': 0, 'pIndex': 0})
+
+    for pIndex, pitch in enumerate(current_pitches):
+        if pitch > 0:  # اگر نوت معتبر باشد
+            note_name = librosa.hz_to_note(math.floor(pitch))
+            note_mag = magnitudes[pIndex, index]  # قدرت نوت فعلی
+            note_counter[note_name]['pIndex'] = pIndex
+            note_counter[note_name]['count'] += 1
+            note_counter[note_name]['total_mag'] += note_mag
+            note_counter[note_name]['avg_mag'] = note_counter[note_name]['total_mag'] / note_counter[note_name]['count']
+            note_counter[note_name]['score'] = note_counter[note_name]['count'] * note_counter[note_name]['avg_mag']
+
+    # پیدا کردن نوت غالب
+    max_score_key = max(note_counter, key=lambda k: note_counter[k]['score'], default=0)
+    HIndex = note_counter[max_score_key]['pIndex']
     HFrequency[0][index] = DPitches[index][HIndex]
-    
+
     if DPitches[index][HIndex] > 0:        
         HFrequency[1][index] = librosa.hz_to_note(math.floor(DPitches[index][HIndex]))
         HFrequency[2][index] = librosa.note_to_hz(HFrequency[1][index])
