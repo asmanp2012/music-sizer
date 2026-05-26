@@ -9,9 +9,9 @@ export default tseslint.config(
     ignores: [
       "node_modules",
       "dist",
-      "*.js",
-      "*.map",
-      "*.d.ts",
+      "**/*.js",
+      "**/*.map",
+      "**/*.d.ts",
     ]
   },
   {
@@ -49,6 +49,7 @@ export default tseslint.config(
       }
     },
     rules: {
+      "jsdoc/tag-lines": "off",
       "no-eval": ["error", { allowIndirect: true }],
       "curly": ["error", "all"],
       "comma-dangle": ["error", {
