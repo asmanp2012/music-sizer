@@ -1,0 +1,26 @@
+{
+  "name": "@music-sizer/singer",
+  "version": "0.0.0",
+  "description": "Singer package for Music Sizer",
+  "main": "index.ts",
+  "author": "Godgiven",
+  "type": "module",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "wavefile": "^11.0.0",
+    "web-audio-api": "^1.5.1",
+    "@types/node": "^25.9.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/asmanp2012/music-sizer/tree/main/package/singer"
+  },
+  "files": [
+    "*.ts",
+    "*.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
