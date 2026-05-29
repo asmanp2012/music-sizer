@@ -1,1 +1,1 @@
-export * from './src/fret-guitar.js';
+export * from './src/fret-guitar.ts';

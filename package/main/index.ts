@@ -1,1 +1,1 @@
-export * from './music.js';
+export * from './src/music.ts';

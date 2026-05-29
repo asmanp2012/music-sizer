@@ -59,6 +59,7 @@
       "name": "@music-sizer/singer",
       "version": "0.0.0",
       "devDependencies": {
+        "@types/node": "^25.9.1",
         "wavefile": "^11.0.0",
         "web-audio-api": "^1.5.1",
       },
