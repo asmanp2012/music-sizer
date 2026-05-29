@@ -2,7 +2,7 @@
   "name": "@godgiven/demo",
   "version": "0.1.4",
   "description": "Rest full api server",
-  "main": "index.js",
+  "main": "index.ts",
   "author": "Godgiven",
   "type": "module",
   "private": true,
