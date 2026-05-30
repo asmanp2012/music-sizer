@@ -354,4 +354,4 @@ guitar.next(3);
 guitar.play({ wireList: [{ w: 3, f: 2 }], inputDuration: { type: 3, length: 4 } });
 guitar.next(6);
 
-myMusic.save('./demo/base-guitar/soltan-ghalbha.mid');
+myMusic.save('./demo/output/base-guitar/soltan-ghalbha.mid');

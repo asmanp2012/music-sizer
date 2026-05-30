@@ -55,4 +55,4 @@ rhythmWaltz(achordList.C, null, null);
 rhythmWaltz(null, null, null);
 rhythmWaltz(achordList.Am, null, null);
 rhythmWaltz(null, null, null);
-myMusic.save('./demo/guitar/syncope.mid');
+myMusic.save('./demo/output/guitar/syncope.mid');

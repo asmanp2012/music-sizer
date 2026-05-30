@@ -71,4 +71,4 @@ rhythmWaltz(achordList.B, null, null);
 rhythmWaltz(null, null, null);
 rhythmWaltz(achordList.Am, null, null);
 rhythmWaltz(null, null, null);
-myMusic.save('./demo/guitar/soltan-ghalbha.mid');
+myMusic.save('./demo/output/guitar/soltan-ghalbha.mid');

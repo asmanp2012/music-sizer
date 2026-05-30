@@ -86,4 +86,4 @@ rhythm68slowRock(achordList.C, null, null, null, null, null, null, null);
 rhythm68slowRock(achordList.C, null, null, null, null, null, null, null);
 rhythm68slowRock(achordList.Bm, null, null, null, null, null, null, null);
 
-myMusic.save('./demo/guitar/dar-sokote-shab.mid');
+myMusic.save('./demo/output/guitar/dar-sokote-shab.mid');
