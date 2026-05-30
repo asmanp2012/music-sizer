@@ -53,4 +53,4 @@ rhythm(achordList.C, null, null);
 rhythm(null, null, null);
 rhythm(achordList.Am, null, null);
 rhythm(null, null, null);
-myMusic.save('./demo/output/guitar/test.mid');
+myMusic.save('./demo/guitar/test.mid');

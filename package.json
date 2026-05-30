@@ -14,9 +14,8 @@
     "s": "bun run serve",
     "c": "bun run clean",
     "lint": "eslint .",
-    "serve": "bun ./demo/index.ts",
-    "watch": "bun run lint && bun run watch:serve",
-    "watch:serve": "bun ./demo/index.ts",
+    "serve": "bun ./package/demo/index.ts",
+    "watch": "bun run lint && bun run serve",
     "clean": "rm demo/**/*.mid demo/**/*.mid.json"
   },
   "dependencies": {

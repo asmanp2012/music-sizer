@@ -1404,6 +1404,6 @@ myMusic.play({ instrument, noteList: ['B5'], inputDuration: { type: 3, length: 5
 myMusic.next(instrument);
 /* ********** End Bar ************ */
 
-myMusic.save('./demo/output/piano/soltan-ghalbha.mid');
+myMusic.save('./demo/piano/soltan-ghalbha.mid');
 
 export {};
