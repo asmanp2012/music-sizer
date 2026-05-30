@@ -13,12 +13,11 @@
     "w": "bun run watch",
     "s": "bun run serve",
     "c": "bun run clean",
-    "cb": "bun run clean-build",
     "lint": "eslint .",
     "serve": "bun ./demo/index.ts",
     "watch": "bun run lint && bun run watch:serve",
     "watch:serve": "bun ./demo/index.ts",
-    "clean-build": "bun run clean && bun run build"
+    "clean": "rm demo/**/*.mid demo/**/*.mid.json"
   },
   "dependencies": {
     "debug": "^4.4.3"
