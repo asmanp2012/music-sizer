@@ -1,18 +1,24 @@
 import { pitchPyin } from "@libraz/libsonare";
 
+export interface TrackNotes extends Record<string, unknown> {
+  notes: Array<{ startTime: number; duration: number; freq: number }>;
+  tempo: number | null
+}
+
+
 /**
  * Detects notes from audio samples using the PYIN algorithm.
  * pYIN: A fundamental frequency estimator for speech and music" (Mauch & Dixon, 2014)
  * @param { Float32Array } samples - The audio samples to analyze.
  * @param { number } sampleRate - The sample rate of the audio.
  * @param { number } threshold - The YIN threshold for pitch detection (default: 0.05).
- * @returns { { notes: Array<{ startTime: number; duration: number; freq: number }>; tempo: number | null } } An object containing detected notes and estimated tempo.
+ * @returns { TrackNotes } An object containing detected notes and estimated tempo.
  */
-export function detectNotes(
+export function trackNotes(
   samples: Float32Array,
   sampleRate: number,
   threshold: number = 0.05,
-) {
+): TrackNotes {
   const pyinResult = pitchPyin(
     samples,
     sampleRate,

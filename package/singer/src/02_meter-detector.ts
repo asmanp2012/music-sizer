@@ -4,6 +4,7 @@ export interface TimeSignatureResult {
   numerator: number;
   denominator: number;
   confidence: number;
+  source: "note_based" | "beat_tracking";
 }
 
 /**
@@ -17,7 +18,7 @@ export interface TimeSignatureResult {
 export function detectTimeSignature(beatTimes: number[]): TimeSignatureResult {
   // Fallback for insufficient data
   if (beatTimes.length < 12) {
-    return { numerator: 4, denominator: 4, confidence: 0.3 };
+    return { numerator: 4, denominator: 4, confidence: 0.3, source: "note_based" };
   }
 
   // Step 1: Calculate Inter-Onset Intervals (IOIs)
@@ -95,7 +96,8 @@ export function detectTimeSignature(beatTimes: number[]): TimeSignatureResult {
     return {
         numerator: bestPattern,
         denominator: denominator,
-        confidence: confidence
+        confidence: confidence,
+        source: "note_based"
     };
 }
 
