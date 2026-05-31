@@ -1,3 +1,5 @@
+#!/usr/bin/env bun
+
 import { writeFileSync } from 'fs';
 import { parseArgs } from './src/lib/parse-arges.ts';
 import { showHelp } from './src/show-help.ts';

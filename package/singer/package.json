@@ -11,6 +11,10 @@
     "web-audio-api": "^1.5.1",
     "@types/node": "^25.9.1"
   },
+  "bin": {
+    "music-sizer": "./index.ts",
+    "singer": "./index.ts"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/asmanp2012/music-sizer/tree/main/package/singer"
